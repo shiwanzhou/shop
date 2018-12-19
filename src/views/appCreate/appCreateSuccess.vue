@@ -69,64 +69,28 @@
             <div class="title">应用信息</div>
             <div class="desc">应用基本信息用于团队协作沟通，请认真填写。</div>
             <div class="border"></div>
-            <!--应用信息详情-->
-            <Form :model="form" label-position="left" :label-width="100">
-                <div class="appInfo_detail">
-                    <div class="app_name">
-                        <span class="text">应用名称：</span>
-                        <div class="right">
-                            <Input type="text" style="width: 500px;"></Input>
-                            <div class="desc_text">1-100个字符。</div>
-                        </div>
-                    </div>
-                    <div class="system_platform">
-                        <span class="text">系统平台：</span>
-                        <div class="right">
-                            <div class="checkbox">
-                                <CheckboxGroup v-model="form.systemPlatform" >
-                                    <Checkbox label="iOS" size="large"></Checkbox>
-                                    <Checkbox label="Android" size="large"></Checkbox>
-                                    <Checkbox label="HTML5" size="large"></Checkbox>
-                                    <Checkbox label="小程序" size="large"></Checkbox>
-                                </CheckboxGroup>
-                            </div>
-                            <div class="desc_text">当你的业务需要跨平台使用用户数据时请多选。</div>
-                        </div>
-                    </div>
-                    <div class="icon">
-                        <span class="text">图标：</span>
-                        <div class="right">
-                            <Upload
-                                    ref="upload"
-                                    :show-upload-list="false"
-                                    :default-file-list="defaultList"
-                                    :on-success="handleSuccess"
-                                    :on-error="handleError"
-                                    :format="['jpg','jpeg','png']"
-                                    :max-size="500"
-                                    :on-format-error="handleFormatError"
-                                    :on-exceeded-size="handleMaxSize"
-                                    :before-upload="handleBeforeUpload"
-                                    multiple
-                                    type="drag"
-                                    action="//jsonplaceholder.typicode.com/posts/"
-                                    style="display: inline-block;">
-                                <Button type="ghost" icon="ios-cloud-upload-outline">上传</Button>
-                            </Upload>
-                            <div class="desc_text">不超过500KB, 长宽比例1:1的 .jpg或.png文件。</div>
-                        </div>
-                    </div>
-                    <div class="remarks">
-                        <span class="text">备注<i>（可选）</i>：</span>
-                        <div class="right">
-                            <Input v-model="form.remarks" style="width: 500px;" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-                            <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>
-                        </div>
-                    </div>
-                    <Button type="primary" class="update" size="large" @click="create">创建</Button>
-                    <Button class="cancel" size="large" @click="cancelCreate">取消</Button>
+            <!--应用成功信息详情-->
+            <div class="appCreate_suc">
+                <Icon class="icon" type="checkmark-circled"></Icon>
+                <div class="title_text">创建成功</div>
+                <div class="desc">请立即阅读接入指南后，开始服务集成。</div>
+                <Form :model="appCreateSucInfo" class="info" :label-width="100" >
+                    <FormItem label="App Key：">
+                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
+                    </FormItem>
+                    <FormItem label="App Secret：">
+                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
+                    </FormItem>
+                    <FormItem label="App ID：">
+                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
+                        <div class="detail_desc">原Game ID，仅用于系统内部识别唯一业务的标识。</div>
+                    </FormItem>
+                </Form>
+                <div class="btn">
+                    <Button >阅读指南</Button>
+                    <Button type="primary" @click="start">开始集成</Button>
                 </div>
-            </Form>
+            </div>
         </div>
     </div>
 </template>
@@ -139,10 +103,6 @@
         name: 'appInfo',
         data () {
             return {
-                form: {
-                    systemPlatform: [],
-                    remarks: ""
-                },
                 currentApp: "",
                 currentAppSrc: "",
                 avatorPath: "",
@@ -151,7 +111,11 @@
                 menuTheme: "dark",
                 shrink: false,
                 userName: '',
-                tabIndex: 0
+                tabIndex: 0,
+                appCreateSucInfo:{
+                    key:"cdcfvfv"
+
+                }
             };
         },
         computed: {
@@ -170,10 +134,6 @@
         mounted(){
             this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                 console.log(res)
-                let form = {
-                    systemPlatform:['HTML5'],
-                    remarks:"平台，强制联网，微信登录，小程序传播222"
-                }
                 let appList = [
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡"},
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷"},
@@ -181,7 +141,6 @@
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷3"},
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷4"}
                 ];
-                this.form = form;
                 this.appList = appList;
                 this.currentApp = "梦幻家园";
                 this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
@@ -191,33 +150,7 @@
             });
         },
         methods: {
-            handleSuccess (res, file) {
-                file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-                file.name = '7eb99afb9d5f317c912f08b5212fd69a';
-            },
-            handleError (res, file) {
-                console.log(res)
-                this.$Notice.warning({
-                    title: '上传失败！',
-                    desc: res
-                });
-            },
-            handleFormatError (file) {
-                this.$Notice.warning({
-                    title: 'The file format is incorrect',
-                    desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
-                });
-            },
-            handleMaxSize (file) {
-                this.$Notice.warning({
-                    title: 'Exceeding file size limit',
-                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
-                });
-            },
-            handleBeforeUpload () {
-
-            },
-            create(){
+            start(){
                 this.$router.push({
                     name: 'appInfo'
                 });

@@ -19,6 +19,15 @@ export const appCreateRouter = {
     component: resolve => require(['../views/appCreate/appCreate.vue'], resolve)
 };
 
+export const appCreateSucRouter = {
+    path: '/appCreateSuc',
+    name: 'appCreateSuc',
+    meta: {
+        title: 'appCreateSuc - 应用创建成功'
+    },
+    component: resolve => require(['../views/appCreate/appCreateSuccess.vue'], resolve)
+};
+
 export const myAppRouter = {
     path: '/myApp',
     name: 'myApp',
@@ -54,16 +63,6 @@ export const otherRouter = {
 
 // 作为Main组件的子页面展示并且在左侧菜单显示的路由写在appRouter里
 export const appRouter = [
-    {
-        path: '/table',
-        icon: 'key',
-        name: 'access',
-        title: 'table 分页',
-        component: Main,
-        children: [
-            { path: 'index', title: 'table 分页', name: 'table_index',  component: resolve => require(['../views/table/searchable-table.vue'], resolve) }
-        ]
-    },
     {
         path: '/serviceManagement',
         icon: 'key',
@@ -151,6 +150,7 @@ export const appRouter = [
 export const routers = [
     loginRouter,
     appCreateRouter,
+    appCreateSucRouter,
     myAppRouter,
     ...appRouter,
 ];

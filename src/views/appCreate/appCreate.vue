@@ -97,20 +97,20 @@
                         <span class="text">图标：</span>
                         <div class="right">
                             <Upload
-                                    ref="upload"
-                                    :show-upload-list="false"
-                                    :default-file-list="defaultList"
-                                    :on-success="handleSuccess"
-                                    :on-error="handleError"
-                                    :format="['jpg','jpeg','png']"
-                                    :max-size="500"
-                                    :on-format-error="handleFormatError"
-                                    :on-exceeded-size="handleMaxSize"
-                                    :before-upload="handleBeforeUpload"
-                                    multiple
-                                    type="drag"
-                                    action="//jsonplaceholder.typicode.com/posts/"
-                                    style="display: inline-block;">
+                                ref="upload"
+                                :show-upload-list="false"
+                                :default-file-list="defaultList"
+                                :on-success="handleSuccess"
+                                :on-error="handleError"
+                                :format="['jpg','jpeg','png']"
+                                :max-size="500"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                :before-upload="handleBeforeUpload"
+                                multiple
+                                type="drag"
+                                action="//jsonplaceholder.typicode.com/posts/"
+                                style="display: inline-block;">
                                 <Button type="ghost" icon="ios-cloud-upload-outline">上传</Button>
                             </Upload>
                             <div class="desc_text">不超过500KB, 长宽比例1:1的 .jpg或.png文件。</div>
@@ -219,7 +219,7 @@
             },
             create(){
                 this.$router.push({
-                    name: 'appInfo'
+                    name: 'appCreateSuc'
                 });
             },
             cancelCreate(){
