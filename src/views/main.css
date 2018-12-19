@@ -1,0 +1,23 @@
+
+
+
+.main-header .navicon-con .app{
+    display: flex;
+    margin-left: 110px;
+}
+.main-header .navicon-con .app .left{
+    width: 135px;
+    display: flex;;
+}
+.main-header .navicon-con .app .left .img{}
+.main-header .navicon-con .app .left .img img{
+    width: 40px;
+    height: 35px;
+}
+.main-header .navicon-con .app .right{}
+.main-header .navicon-con .app .right .ivu-icon{width: 30px;font-size: 30px;}
+
+.header-avator-con .link{display: flex;justify-content: center;align-items: center;height: 60px;}
+.header-avator-con .link .option{margin-right: 40px;}
+.header-avator-con .link .option Icon{}
+.header-avator-con .link .option  .text{font-size: 14px;}
