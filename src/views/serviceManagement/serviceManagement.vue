@@ -1,5 +1,5 @@
 <style lang="less" scoped>
-    @import './access.less';
+
 </style>
 
 <template>

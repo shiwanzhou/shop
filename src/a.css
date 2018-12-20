@@ -5,8 +5,11 @@
 html, body{background: #fff}
 .clear{clear: both}
 .blue{color: #2d8cf0}
+.title{ font-size: 20px; font-weight: bold;}
+.desc{font-size: 14px;}
 .ivu-form .ivu-form-item-label{font-size: 14px;}
 .ivu-input{font-size: 14px;}
+.page{text-align: right}
 .main-header .navicon-con .app{
     display: flex;
     margin-left: 110px;
@@ -61,11 +64,11 @@ i{font-style:normal;color: #909399;}
 .appInfo {
     margin-top: 20px;
     padding-bottom: 20px;
-    padding-left: 10px;
+    padding-left: 20px;
     font-size: 14px;
 }
-.appInfo .title{font-size: 20px;margin-bottom: 15px;font-weight: bold;}
-.appInfo .desc{font-size: 14px;height: 38px;margin-left: -1px;}
+.appInfo .title{;margin-bottom: 15px;;}
+.appInfo .desc{;height: 38px;margin-left: -1px;}
 .appInfo_detail {
     margin-top: 55px;
     margin-left: 50px;
@@ -117,7 +120,55 @@ i{font-style:normal;color: #909399;}
 .appInfo_detail .cancel{
     margin-top: 28px;
 }
-
+.appManagement{}
+.appManagement .appkey_info{
+    margin-top: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.appManagement .appkey_info .item{
+    display: flex;
+}
+.appManagement .appkey_info .item .ivu-form-item{width: 50%;}
+.appManagement .appkey_info .item  .ivu-form-item  .ivu-form-item-label{text-align: right}
+.appManagement .border{}
+.appManagement .appkey_info .btn{
+    margin-bottom: 25px;
+    margin-left: 98px;
+}
+.appManagement .appkey_info .btn button{
+    margin-right: 20px;
+}
+.appManagement .appInfo_detail{
+    display: flex;
+    margin-left: 30px;
+    padding-right: 30px;
+    width: 97%;
+    margin-top: 30px;
+}
+.appManagement .appInfo_detail .left_span{width: 50%;}
+.appManagement .appInfo_detail .right_span{ width: 50%;}
+.appManagement .appInfo_detail .system_platform .right .checkbox label{margin-right: 20px}
+.appManagement .update{
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.appManagement .ivu-input{width: 65%;}
+.appManagement .appInfo_detail .text{
+    text-align: right;
+    width: 100px;
+}
+.appManagement .appInfo_detail .app_name .text{}
+.appManagement .appInfo_detail .app_name .right .ivu-input{width: 70%}
+.appManagement .appInfo_detail .app_name .right{width: 75%;}
+.appManagement .appInfo_detail .remarks{}
+.appManagement .appInfo_detail .remarks .text{
+    width: 126px;
+    text-align: left;
+}
+.appManagement .appInfo_detail .remarks textarea{
+    width: 100%;
+}
 /*应用创建*/
 .appCreate .appInfo{
     margin-top: 60px;
@@ -170,6 +221,7 @@ i{font-style:normal;color: #909399;}
     width: 100%;
     position: fixed;
     top: 60px;
+    background-color: rgba(240, 242, 245, 1);
 }
 .myApp .left{
     width: 100%;
@@ -178,8 +230,6 @@ i{font-style:normal;color: #909399;}
     padding-right: 35px;
 }
 .myApp .left .title{
-    font-size: 20px;
-    font-weight: bold;
     margin-bottom: 20px;
 }
 .myApp .left .search{
@@ -253,10 +303,6 @@ i{font-style:normal;color: #909399;}
     padding-right: 35px;
     width: 290px;
 }
-.myApp .right .title{
-    font-size: 20px;
-    font-weight: bold;
-}
 .myApp .right .card{
     margin-top: 25px;
 }
@@ -276,3 +322,31 @@ i{font-style:normal;color: #909399;}
     color: #909399;
 }
 
+/*成员管理*/
+.memberManagement{}
+.memberManagement .option{
+    padding: 30px;
+    margin-bottom: 20px;
+}
+.memberManagement .option .search{
+    margin-bottom: 20px;
+}
+.memberManagement .option .search .left{
+    float: left;
+}
+.memberManagement .option .search .left span{}
+.memberManagement .option .search .right{
+    float: right;
+}
+.memberManagement .option .btn{
+    margin-top: 30px;
+}
+.memberManagement .member_table{
+    padding: 30px;
+    margin-bottom: 20px;
+    margin-top: -50px;
+}
+.memberManagement .page{
+    margin-top: 40px;
+    text-align: right;
+}

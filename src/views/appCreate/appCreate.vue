@@ -11,7 +11,7 @@
                             <div class="logo"><img  src="../../images/logo.png"/></div>
                             <span class="title">技术中台服务门户</span>
                         </div>
-                        <div class="app" @click="changeApp">
+                        <div class="app" @click="changeApp" v-show="showAppList">
                             <div class="left">
                                 <div class="img">
                                     <img :src="currentAppSrc">

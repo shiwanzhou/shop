@@ -74,7 +74,7 @@ export const appRouter = [
         ]
     },
     {
-        path: 'commodityManagement',
+        path: '/commodityManagement',
         icon: 'lock-combination',
         title: '商品管理',
         name: 'commodityManagement',
@@ -122,7 +122,7 @@ export const appRouter = [
         ]
     },
     {
-        path: 'teamMembers',
+        path: '/teamMembers',
         icon: 'social-buffer',
         name: 'teamMembers',
         title: '团队成员',
@@ -133,14 +133,14 @@ export const appRouter = [
                 icon: 'compose',
                 name: 'memberManagement',
                 title: '成员管理',
-                component: resolve => require(['../views/teamMembers/teamMembers.vue'], resolve)
+                component: resolve => require(['../views/teamMembers/memberManagement.vue'], resolve)
             },
             {
-                path: 'role',
+                path: 'roleManagement',
                 icon: 'compose',
-                name: 'role',
+                name: 'roleManagement',
                 title: '角色/权限',
-                component: resolve => require(['../views/teamMembers/role.vue'], resolve)
+                component: resolve => require(['../views/teamMembers/roleManagement.vue'], resolve)
             }
         ]
     },

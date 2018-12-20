@@ -96,7 +96,7 @@
     import VueI18n from 'vue-i18n';
     Vue.use(VueI18n);
     import shrinkableMenu from './main-components/shrinkable-menu/shrinkable-menu.vue';
-
+    window.commonApp = 2;
     export default {
         components: {
             shrinkableMenu
@@ -130,6 +130,8 @@
                 return "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
             },
         },
+        created(){
+        },
         mounted(){
             this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                 let appList = [
@@ -158,12 +160,15 @@
                 this.showAppList = false;
                 this.currentApp = item.name;
                 this.currentAppSrc = item.img;
+                window.commonApp = 1;
+                this.$store.commit('updateMenulist');
             },
             toggleClick () {
                 this.shrink = !this.shrink;
             },
             clickItem(index){
                 this.tabIndex = index;
+                this.$store.commit('updateMenulist');
             },
             handleSubmenuChange (val) {
             },
