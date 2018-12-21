@@ -113,7 +113,7 @@
                 console.log(res)
                 let form = {
                     systemPlatform:['HTML5'],
-                    remarks:"平台，强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222",
+                    remarks:"平台，强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,",
                     appKey:"dfvfvfv",
                     appSecret:"vfv",
                     appID:"vf344"

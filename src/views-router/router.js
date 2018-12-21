@@ -144,6 +144,29 @@ export const appRouter = [
             }
         ]
     },
+    {
+        path: '/issueChannel',
+        icon: 'social-buffer',
+        name: 'issueChannel',
+        title: '发行渠道',
+        component: Main,
+        children: [
+            {
+                path: 'channelNumber',
+                icon: 'compose',
+                name: 'channelNumber',
+                title: '渠道号',
+                component: resolve => require(['../views/channelManagement/issueChannel/channelNumber.vue'], resolve)
+            },
+            {
+                path: 'channelManagement',
+                icon: 'compose',
+                name: 'channelManagement',
+                title: '渠道管理',
+                component: resolve => require(['../views/channelManagement/issueChannel/channelManagement.vue'], resolve)
+            }
+        ]
+    }
 ];
 
 // 所有上面定义的路由都要写在下面的routers里

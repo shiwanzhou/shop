@@ -5,11 +5,12 @@
 html, body{background: #fff}
 .clear{clear: both}
 .blue{color: #2d8cf0}
-.title{ font-size: 20px; font-weight: bold;}
+.title{font-size: 18px;font-weight: bold;}
 .desc{font-size: 14px;}
 .ivu-form .ivu-form-item-label{font-size: 14px;}
 .ivu-input{font-size: 14px;}
 .page{text-align: right}
+.breadcrumb{margin-bottom: 15px;}
 .main-header .navicon-con .app{
     display: flex;
     margin-left: 110px;
@@ -334,12 +335,13 @@ i{font-style:normal;color: #909399;}
 .memberManagement .option .search .left{
     float: left;
 }
-.memberManagement .option .search .left span{}
+.memberManagement .option .search .left span.item{margin-right: 10px;}
 .memberManagement .option .search .right{
     float: right;
 }
 .memberManagement .option .btn{
     margin-top: 30px;
+    text-align: right;
 }
 .memberManagement .member_table{
     padding: 30px;
@@ -350,3 +352,8 @@ i{font-style:normal;color: #909399;}
     margin-top: 40px;
     text-align: right;
 }
+
+/*渠道号*/
+.channelNumber{}
+.channelNumber .option .search .left button{}
+.channelNumber .option .search .btn{margin-top: 20px;}

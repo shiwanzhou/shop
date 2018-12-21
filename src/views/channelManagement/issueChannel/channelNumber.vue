@@ -3,30 +3,49 @@
 </style>
 
 <template>
-    <div class="appInfo memberManagement">
-        <div class="title">成员管理</div>
-        <div class="desc">邀请伙伴加入，管理可以访问当前业务的团队成员。</div>
+    <div class="appInfo memberManagement channelNumber">
+        <div class="breadcrumb">
+            <Breadcrumb>
+                <BreadcrumbItem to="/issueChannel/channelNumber">平台参数</BreadcrumbItem>
+                <BreadcrumbItem to="/issueChannel/channelNumber">发行渠道</BreadcrumbItem>
+                <BreadcrumbItem>渠道号</BreadcrumbItem>
+            </Breadcrumb>
+        </div>
+        <div class="title">渠道号</div>
+        <div class="desc">
+            渠道号是最小颗粒度的用户来源标记，必须标记所属渠道来识别用户所属媒体。
+        </div>
         <div class="border"></div>
-        <!--成员管理详情-->
+        <!--渠道号列表-->
         <div class="option">
             <div class="search">
                 <div class="left">
-                    <span>角色：</span>
-                    <Select  style="width:200px">
-                        <Option>fvf</Option>
-                    </Select>
+                    <ButtonGroup>
+                        <Button type="primary">使用中</Button>
+                        <Button>已停用</Button>
+                    </ButtonGroup>
                 </div>
                 <div class="right">
-                    <Input  icon="ios-search" placeholder="姓名" style="width: 300px"></Input>
+                    <span>所属渠道：</span>
+                    <Select  style="width:200px;margin-right: 20px;">
+                        <Option>fvf</Option>
+                    </Select>
+                    <Input  icon="ios-search" placeholder="渠道名称" v-model="searchOption.channelNumberName" @on-enter="search($event)" style="width: 300px"></Input>
                 </div>
-            </div>
-            <div class="clear"></div>
-            <div class="btn">
-                <Button type="primary" class="update" size="large" @click="createMember">创建</Button>
+                <div class="clear"></div>
+                <div class="btn">
+                    <div class="left">
+                        <Button>修改所属渠道</Button>
+                        <Button>导出</Button>
+                    </div>
+                    <div class="right">
+                        <Button type="primary" class="update" size="large" @click="createMember">创建</Button>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="member_table">
-            <Table :columns="memberTableColumns" :data="memberTableData"></Table>
+            <Table  ref="selection" :columns="channelNumberTableColumns" :data="channelNumberTableData"></Table>
             <div class="clear"></div>
             <div class="page">
                 <Page :total="totalPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
@@ -40,11 +59,41 @@
         name: 'appInfo',
         data () {
             return {
-                memberTableData:[],
-                memberTableColumns: [
+                searchOption:{
+                    channelNumberName:"",
+                    subordinateChannel:[]
+                },
+                channelNumberTableData:[],
+                channelNumberTableColumns: [
                     {
-                        title: '应用名称',
-                        key: 'name',
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
+                        title: '渠道号名称 ',
+                        key: 'name'
+                    },
+                    {
+                        title: '渠道号',
+                        key: 'channelNumber',
+                    },
+                    {
+                        title: '所属渠道',
+                        key: 'subordinateChannel'
+                    },
+                    {
+                        title: '创建者',
+                        key: 'creator'
+                    },
+                    {
+                        title: '创建时间',
+                        key: 'createTime',
+                        sortable: true
+                    },
+                    {
+                        title: '操作',
+                        key: 'operation',
                         render: (h, params) => {
                             return h('div',{
                                 style: {
@@ -54,89 +103,33 @@
                                     "align-items":"center"
                                 },
                             }, [
-                                h('img', {
-                                    attrs: {
-                                        src: params.row.img
+                                h('span', {
+                                    domProps: {
+                                        innerHTML:"修改"
                                     },
                                     style: {
-                                        width: '40px',
-                                        marginRight:"10px"
+                                        marginRight:"20px",
+                                        color:"#2d8cf0",
+                                        cursor: "pointer"
+                                    },
+                                    on: {
+                                        click: this.update
                                     }
                                 }),
-                                h('div',{},
-                                    [
-                                        h('div',{
-                                            style: {
-
-                                                fontWeight:'bold',
-                                                fontSize:'14px'
-                                            },
-                                            domProps: {
-                                                innerHTML: params.row.name
-                                            },
-                                        })
-                                    ])
-                            ]);
-                        }
-                    },
-                    {
-                        title: '角色',
-                        key: 'tag',
-                        render: (h, params) => {
-                            return h('div',{
-                                style: {
-                                    display:"flex"
-                                },
-                            }, [
-                                h('Button', {
-                                    attrs: {
-                                        disabled: "true",
-                                        size: "small",
-                                    },
+                                h('span',{
                                     domProps: {
-                                        innerHTML: "运营"
+                                        innerHTML:"停用"
                                     },
                                     style: {
-                                        marginRight:"10px",
-                                        display:(params.row.role == '运营' ||  params.row.role == '运营,负责人')?"inline-block":"none",
-                                    }
-                                }),
-                                h('Button', {
-                                    attrs: {
-                                        disabled: "true",
-                                        size: "small",
+                                        color:"#2d8cf0",
+                                        cursor: "pointer"
                                     },
-                                    domProps: {
-                                        innerHTML: "开发"
-                                    },
-                                    style: {
-                                        marginRight:"10px",
-                                        display:(params.row.role == '开发' ||  params.row.role == '开发,负责人')?"inline-block":"none"
-                                    }
-                                }),
-                                h('Button', {
-                                    attrs: {
-                                        disabled: "true",
-                                        size: "small",
-                                    },
-                                    domProps: {
-                                        innerHTML: "测试"
-                                    },
-                                    style: {
-                                        marginRight:"10px",
-                                        display:(params.row.role == '测试' ||  params.row.role == '测试,负责人')?"inline-block":"none"
+                                    on: {
+                                        click: this.stop
                                     }
                                 })
                             ]);
                         }
-                    },
-                    {
-                        title: '创建时间',
-                        key: 'createTime'
-                    },
-                    {
-                        title: '最后登录',
-                        key: 'lastLoginTime'
                     }
                 ],
                 curPage:1,
@@ -149,71 +142,75 @@
         created(){
         },
         mounted(){
-            this.getMemberList();
+            this.getChannelNumberList();
         },
         methods: {
-            getMemberList(){
-                this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
+            search(){
+              console.log(this.searchOption.channelNumberName)
+            },
+            update(){
+                console.log(333)
+            },
+            stop(){
+                console.log(111)
+            },
+            getChannelNumberList(){
                     this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                         console.log(res)
-                        let memberList = [
+                        let channelNumberList = [
                             {
-                                "lastLoginTime":"2018-11-11 09:08",
+                                "creator":"doggy.wang (王二狗)",
                                 "createTime":"2018-11-11 09:08",
                                 "id":2,
                                 "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"(fullname) 姓名",
-                                "text":"这是一个演示控制台能力的DEMO，你可以先看看。",
-                                "role":"运营,负责人"
+                                "name":"华为vfvfv",
+                                "channelNumber":"HW0S0N84001",
+                                "subordinateChannel":"华为"
                             },
                             {
-                                "lastLoginTime":"2018-11-11 09:08",
+                                "creator":"doggy.wang (王二狗)",
                                 "createTime":"2018-11-11 09:08",
                                 "id":2,
                                 "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"(fullname) 姓名55",
-                                "text":"这是一个演示控制台能力的DEMO，你可以先看看。",
-                                "role":"运营"
+                                "name":"华为vfvfv",
+                                "channelNumber":"HW0S0N84001",
+                                "subordinateChannel":"中兴"
                             },
                             {
-                                "lastLoginTime":"2018-11-11 09:08",
+                                "creator":"doggy.wang (王二狗)",
                                 "createTime":"2018-11-11 09:08",
                                 "id":2,
                                 "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"(fullname) 姓名3333",
-                                "text":"这是一个演示控制台能力的DEMO，你可以先看看。",
-                                "role":"测试"
+                                "name":"华为vfvfv2222",
+                                "channelNumber":"HW0S0N84001",
+                                "subordinateChannel":"三星"
                             },
                             {
-                                "lastLoginTime":"2018-11-11 09:08",
+                                "creator":"doggy.wang (王二狗)",
                                 "createTime":"2018-11-11 09:08",
                                 "id":2,
                                 "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"(fullname) 姓名222",
-                                "text":"这是一个演示控制台能力的DEMO，你可以先看看。",
-                                "role":"测试"
+                                "name":"华为vfvfvvfvfv222",
+                                "channelNumber":"HW0S0N84001",
+                                "subordinateChannel":"三星222"
                             },
                             {
-                                "lastLoginTime":"2018-11-11 09:08",
+                                "creator":"doggy.wang (王二狗222)",
                                 "createTime":"2018-11-11 09:08",
                                 "id":2,
                                 "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"(fullname) 姓名2",
-                                "text":"这是一个演示控制台能力的DEMO，你可以先看看。",
-                                "role":"开发"
+                                "name":"华为vfvfv2vgbg",
+                                "channelNumber":"HW0S0N84001",
+                                "subordinateChannel":"三星3444"
                             }
                         ];
-                        this.memberList = memberList;
+                        this.channelNumberTableData = channelNumberList;
                         this.currentApp = "梦幻家园";
                         this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
                         this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
-                        this.memberTableData = memberList;
                     }).catch((err) => {
                         this.$Message.error('This is an error tip');
                     });
-                }).catch((err) => {
-                    this.$Message.error('This is an error tip');
-                });
             },
             createMember(){
                 this.$router.push({
