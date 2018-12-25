@@ -41,14 +41,18 @@
                         <Button  @click="stop(1)">停用</Button>
                     </div>
                     <div class="right">
-                        <Button  icon="ios-download-outline"  @click="batchImportModel =  true">全部导出</Button>
+                        <Button  icon="ios-download-outline"  @click="batchExport">全部导出</Button>
                         <Button  icon="ios-upload-outline"  @click="batchImportModel = true">批量导入</Button>
                         <Button type="primary" class="update" size="large" @click="createChannelModel = true">创建</Button>
                         <Modal
                                 title="创建渠道号"
                                 v-model="createChannelModel"
+                                @on-ok="createChannelOk"
+                                @on-cancel="cancel"
+                                :loading="loading"
                                 class-name="vertical-center-modal  form createChannelModel" width="650">
                             <div class="content">
+                                <Alert type="error" v-show="showError" show-icon></Alert>
                                 <div class="item select_item">
                                     <span class="text">所属渠道：</span>
                                     <div class="right">
@@ -93,6 +97,7 @@
                     v-model="updateChannelModel"
                     class-name="vertical-center-modal  form deleteChannelModel" width="485">
                 <div class="content">
+                    <Alert type="error" v-show="showError" show-icon></Alert>
                     <div class="desc_text remind_text">
                         注意：你将修改 “渠道号名称”、“渠道号名称” 等#####个渠道号的所属渠道。
                     </div>
@@ -113,6 +118,7 @@
                     v-model="batchImportModel"
                     class-name="vertical-center-modal  form batchImportModel" width="640">
                 <div class="content">
+                    <Alert type="error" v-show="showError" show-icon></Alert>
                     <div class="desc_text remind_text">
                         <p>导入数据如下：</p>
                         <p>* {Key}一列,  ##-###个数字字母字符* ...，##-####字符；</p>
@@ -144,6 +150,8 @@
                 updateChannelModel:false,
                 stopChannelModel:false,
                 batchImportModel:false,
+                showError:false,
+                loading: true,
                 tableSize: 'large',
                 searchOption:{
                     channelNumberName:"",
@@ -240,6 +248,25 @@
             },
             update(){
                 this.updateChannelModel = true;
+            },
+            batchExport(){
+                const title = '批量导出成功';
+                const content = '<p>已成功导出 <span>##### </span>#条记录。</p>';
+                this.$Modal.success({
+                    title: title,
+                    content: content
+                });
+            },
+            createChannelOk(){
+              console.log(233)
+              this.showError = true;
+                setTimeout(() => {
+                    this.showError = false;
+                    this.createChannelModel = false;
+                }, 2000);
+            },
+            cancel(){
+                this.showError = false;
             },
             stop(){
                 this.$Modal.confirm({

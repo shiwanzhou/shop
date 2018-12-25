@@ -1,5 +1,7 @@
 <style lang="less" scoped>
-
+    input::-webkit-input-placeholder { /* WebKit browsers */
+        line-height: 20px
+    }
 </style>
 
 <template>
@@ -30,7 +32,21 @@
             </div>
             <div class="clear"></div>
             <div class="btn">
-                <Button type="primary" class="update" size="large" @click="createMember">添加</Button>
+                <Button type="primary" class="update" size="large" @click="addMemberModel = true">添加</Button>
+                <Modal
+                        title="添加成员"
+                        v-model="addMemberModel"
+                        class-name="vertical-center-modal  form addMemberModel" width="485">
+                    <div class="content">
+                        <Alert type="error" v-show="showError" show-icon></Alert>
+                        <div class="item">
+                            <span class="text">搜索成员：</span>
+                            <div class="right">
+                                <Input type="text" style="width: 330px;" placeholder="请输入姓名搜索你要找的公司成员"></Input>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
             </div>
         </div>
         <div class="member_table">
@@ -48,6 +64,7 @@
         name: 'appInfo',
         data () {
             return {
+                addMemberModel:false,
                 memberTableData:[],
                 memberTableColumns: [
                     {
@@ -288,9 +305,9 @@
                 console.log("delete");
             },
             createMember(){
-                this.$router.push({
+               /* this.$router.push({
                     name: "appCreate"
-                });
+                });*/
             },
             handleCurrentChange(val) {
                 this.curPage = val;

@@ -36,6 +36,7 @@
                             v-model="createChannelModel"
                             class-name="vertical-center-modal  form createChannelModel" width="650">
                         <div class="content">
+                            <Alert type="error" v-show="showError" show-icon></Alert>
                             <div class="item">
                                 <span class="text channel_name_text">渠道名称：</span>
                                 <div class="right">
@@ -63,6 +64,7 @@
                     v-model="deleteChannelModel"
                     class-name="vertical-center-modal  form deleteChannelModel" width="485">
                 <div class="content">
+                    <Alert type="error" v-show="showError" show-icon></Alert>
                     <div class="desc_text remind_text">
                         注意：你想删除的 “渠道名称”包含#####个渠道号，请移动这些渠道号到另一个现有渠道下。
                     </div>
@@ -83,6 +85,7 @@
                     v-model="updateChannelModel"
                     class-name="vertical-center-modal  form deleteChannelModel" width="485">
                 <div class="content">
+                    <Alert type="error" v-show="showError" show-icon></Alert>
                     <div class="desc_text remind_text">
                         注意：你将修改 “渠道号名称”、“渠道号名称” 等#####个渠道号的所属渠道。
                     </div>
@@ -114,6 +117,7 @@
                 createChannelModel:false,
                 deleteChannelModel:false,
                 updateChannelModel:false,
+                showError:false,
                 searchOption:{
                     channelNumberName:"",
                     subordinateChannel:[]

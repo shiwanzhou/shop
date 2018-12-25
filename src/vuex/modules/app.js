@@ -50,45 +50,16 @@ const app = {
                 },
                 {
                     id: '1',
-                    path: '/serviceManagement',
+                    path: '/onlineParam',
                     icon: 'key',
-                    name: 'serviceManagement',
-                    title: '服务管理',
+                    name: 'onlineParam',
+                    title: '在线参数',
                     children: [
                         {
-                            path: 'index',
+                            path: 'userLogin',
                             icon: 'compose',
-                            name: 'serviceManagement_index',
-                            title: '服务管理'
-                        }
-                    ]
-                },
-                {
-                    id: '1',
-                    path: '/commodityManagement',
-                    icon: 'key',
-                    name: 'commodityManagement',
-                    title: '商品管理',
-                    children: [
-                        {
-                            path: 'purchasePropsManagement',
-                            icon: 'compose',
-                            name: 'purchasePropsManagement',
-                            title: '内购道具管理',
-                            children: [
-                                {
-                                    path: 'iOS',
-                                    icon: '',
-                                    name: 'iOS',
-                                    title: 'iOS'
-                                },
-                                {
-                                    path: 'Android',
-                                    icon: '',
-                                    name: 'Android',
-                                    title: 'Android'
-                                }
-                            ]
+                            name: 'userLogin',
+                            title: '用户登录'
                         }
                     ]
                 }
@@ -181,7 +152,7 @@ const app = {
                 let param = {};
                 param.appRouter = appRouter;
                 param.serviceInfo = serviceInfo;
-                context.commit("updateChannelManagementMenulist",param);
+                context.commit("updateMenulist",param);
             }).catch((err) => {
                 this.$Message.error('This is an error tip');
             });

@@ -145,6 +145,22 @@ export const appRouter = [
         ]
     },
     {
+        path: '/onlineParam',
+        icon: 'social-buffer',
+        name: 'onlineParam',
+        title: '在线参数',
+        component: Main,
+        children: [
+            {
+                path: 'userLogin',
+                icon: 'compose',
+                name: 'userLogin',
+                title: '用户登录',
+                component: resolve => require(['../views/onlineParam/userLogin.vue'], resolve)
+            }
+        ]
+    },
+    {
         path: '/issueChannel',
         icon: 'social-buffer',
         name: 'issueChannel',

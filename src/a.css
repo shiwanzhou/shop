@@ -425,5 +425,45 @@ em{font-style:normal;color: #909399;}
 .batchImportModel .remind_text p{
     height: 22px;
 }
-
-
+/*用户登录*/
+.userLogin .form{margin-top: 30px}
+/*添加成员*/
+.addMemberModel{
+}
+.addMemberModel .content{
+    height:310px;
+}
+.addMemberModel .item .text{
+}
+.addMemberModel .item .right input{
+    height: 70px;
+}
+/*权限管理*/
+.roleManagement{}
+.roleManagement .detail{}
+.roleManagement .select{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.roleManagement .module{
+}
+.roleManagement .module .item {
+    border-top: 1px solid #e9eaec;
+    padding: 20px;
+    position: relative;
+}
+.roleManagement .module .item .left{
+    margin-right: 35px;
+    position: absolute;
+    top: 35px;
+    width: 155px;
+}
+.roleManagement .module .item .left .name{margin-right: 35px;}
+.roleManagement .module .item .checkbox_group{
+    display: inline-block;
+    width: 100%;
+    margin-left: 165px;
+}
+.roleManagement .module .item .checkbox_group label{margin-right: 35px;line-height: 50px;}

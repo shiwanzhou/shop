@@ -3,6 +3,7 @@ import iView from 'iview';
 import {router} from './views-router/index';
 import axios from 'axios';
 import store from './vuex/store';
+import Qs from 'qs';
 import App from './app.vue';
 import '@/locale';
 import 'iview/dist/styles/iview.css'
@@ -29,7 +30,7 @@ if (location.href.indexOf('//localhost') != -1) {
     $url = $http + $host + "/";
 }
 Vue.prototype.$url = $url;
-
+Vue.prototype.$qs = Qs;
 /* 定义请求 */
 Vue.prototype.$post = function (url, data, type) {
     return axios({
