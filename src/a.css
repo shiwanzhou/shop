@@ -3,6 +3,8 @@
 
 /*公共样式*/
 html, body{background: #fff}
+a{color: #495060}
+em{font-style:normal;color: #909399;}
 .clear{clear: both}
 .blue{color: #2d8cf0}
 .title{font-size: 18px;font-weight: bold;}
@@ -11,6 +13,10 @@ html, body{background: #fff}
 .ivu-input{font-size: 14px;}
 .page{text-align: right}
 .breadcrumb{margin-bottom: 15px;}
+.desc_text{
+    color: #909399;
+    font-size: 12px;
+}
 .main-header .navicon-con .app{
     display: flex;
     margin-left: 110px;
@@ -58,7 +64,42 @@ html, body{background: #fff}
 .header-avator-con .link .option{margin-right: 40px;}
 .header-avator-con .link .option Icon{}
 .header-avator-con .link .option  .text{font-size: 14px;}
-i{font-style:normal;color: #909399;}
+
+
+
+/*表单基础样式*/
+.form .content{
+    width: 450px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.form .item{
+    display: flex;
+    margin-bottom: 20px;
+}
+.form .item .text{
+    width: 70px;
+    text-align: right;
+}
+.form .item .text.channel_name_text{margin-top: 6px;}
+.form .item .right .desc_text{
+    color: #909399;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.form  .item.select_item  .remind_text{
+    margin-bottom: 20px;
+    width: 400px;
+    margin-left: 17px;
+}
+.form  .item.select_item .text{
+    width: 130px;
+    margin-top: 8px;
+}
+.form .item.select_item .right .desc_text{
+    width: 87%;
+}
 
 
 /*应用信息*/
@@ -355,5 +396,34 @@ i{font-style:normal;color: #909399;}
 
 /*渠道号*/
 .channelNumber{}
-.channelNumber .option .search .left button{}
+.channelNumber .option .search .left .subordinateChannel{margin-left: 10px;display: inline-block;}
 .channelNumber .option .search .btn{margin-top: 20px;}
+
+/*创建渠道弹框*/
+.createChannelModel .item .text.channel_name_text{margin-top: 6px;}
+.createChannelModel .item.select_item .text{width: 114px;}
+/*删除渠道*/
+.deleteChannelModel  .remind_text{
+    margin-bottom: 20px;
+    width: 400px;
+    margin-left: 17px;
+}
+.deleteChannelModel  .item .text{
+    width: 130px;
+    margin-top: 8px;
+}
+.deleteChannelModel .item .right .desc_text{
+    width: 87%;
+}
+/*批量导入*/
+.batchImportModel {}
+.batchImportModel .btn{
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.batchImportModel .btn button{margin-right: 15px;}
+.batchImportModel .remind_text p{
+    height: 22px;
+}
+
+

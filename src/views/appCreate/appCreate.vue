@@ -117,7 +117,7 @@
                         </div>
                     </div>
                     <div class="remarks">
-                        <span class="text">备注<i>（可选）</i>：</span>
+                        <span class="text">备注<em>（可选）</em>：</span>
                         <div class="right">
                             <Input v-model="form.remarks" style="width: 500px;" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
                             <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>

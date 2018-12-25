@@ -82,11 +82,11 @@
                  </div>
                  <div class="btn">
                      <div class="left_btn">
-                         <ButtonGroup>
-                             <Button type="primary">最近访问</Button>
-                             <Button>我创建的</Button>
-                             <Button>最新创建</Button>
-                         </ButtonGroup>
+                         <Radio-group v-model="tab" type="button">
+                             <Radio label="large">最近访问</Radio>
+                             <Radio label="default">我创建的</Radio>
+                             <Radio label="default2">最新创建</Radio>
+                         </Radio-group>
                      </div>
                      <div class="right_btn">
                          <span @click="changeAppList(1)" :class="{blue:1 == changeAppIndex}" >
@@ -134,8 +134,8 @@
              </div>
              <div class="right">
                  <div class="title">平台服务产品</div>
-                 <Card class="card" style="width: 220px;">
-                     <div class="item">
+                 <Card class="card"style="width: 220px;cursor: pointer">
+                     <a class="item" :href="channelManagementHref" target="_blank">
                          <Icon class="icon" type="disc"></Icon>
                          <div class="item_text">
                              <div class="small_title">
@@ -145,46 +145,20 @@
                                  这是一个平台服务注释，你可以先看看。
                              </div>
                          </div>
-                     </div>
+                     </a>
                  </Card>
                  <Card class="card" style="width: 220px;">
-                     <div class="item">
+                     <a class="item" href="http://dc.idreamsky.com/" target="_blank">
                          <Icon class="icon" type="disc"></Icon>
                          <div class="item_text">
                              <div class="small_title">
-                                 订单报表
+                                 数据平台
                              </div>
                              <div class="text">
                                  这是一个平台服务注释，你可以先看看。
                              </div>
                          </div>
-                     </div>
-                 </Card>
-                 <Card class="card" style="width: 220px;">
-                     <div class="item">
-                         <Icon class="icon" type="disc"></Icon>
-                         <div class="item_text">
-                             <div class="small_title">
-                                 在线控制参数
-                             </div>
-                             <div class="text">
-                                 这是一个平台服务注释，你可以先看看。
-                             </div>
-                         </div>
-                     </div>
-                 </Card>
-                 <Card class="card" style="width: 220px;">
-                     <div class="item">
-                         <Icon class="icon"  type="disc"></Icon>
-                         <div class="item_text">
-                             <div class="small_title">
-                                 客服服务
-                             </div>
-                             <div class="text">
-                                 这是一个平台服务注释，你可以先看看。
-                             </div>
-                         </div>
-                     </div>
+                     </a>
                  </Card>
              </div>
         </div>
@@ -199,6 +173,8 @@
         name: 'appInfo',
         data () {
             return {
+                channelManagementHref:this.$url+"/#/issueChannel/channelNumber",
+                tab:"large",
                 currentApp: "",
                 currentAppSrc: "",
                 avatorPath: "",
