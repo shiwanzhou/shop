@@ -351,10 +351,13 @@ em{font-style:normal;color: #909399;}
 .myApp .right .item{
     display: flex;
 }
-.myApp .right .item .item_text{}
+.myApp .right .item .item_text{
+    color: #2d8cf0;
+}
 .myApp .right .item .icon{
     font-size: 30px;
     margin-right: 8px;
+    color: #2d8cf0;
 }
 .myApp .right .item .small_title{
     font-size: 16px;
@@ -379,6 +382,17 @@ em{font-style:normal;color: #909399;}
 .memberManagement .option .search .left span.item{margin-right: 10px;}
 .memberManagement .option .search .right{
     float: right;
+}
+.memberManagement .option .search .select{
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e9eaec;
+    margin-bottom: 20px;
+}
+.memberManagement  .ivu-radio-group-button .ivu-radio-wrapper-checked{
+    background: #2d8cf0;
+    border-color: #2d8cf0;
+    color: #fff;
+    box-shadow: -1px 0 0 0 #2d8cf0;
 }
 .memberManagement .option .btn{
     margin-top: 30px;
@@ -447,8 +461,6 @@ em{font-style:normal;color: #909399;}
     padding-left: 20px;
     padding-right: 20px;
 }
-.roleManagement .module{
-}
 .roleManagement .module .item {
     border-top: 1px solid #e9eaec;
     padding: 20px;
@@ -467,3 +479,13 @@ em{font-style:normal;color: #909399;}
     margin-left: 165px;
 }
 .roleManagement .module .item .checkbox_group label{margin-right: 35px;line-height: 50px;}
+.roleManagement .detail .update{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.roleManagement  .ivu-radio-group-button .ivu-radio-wrapper-checked{
+    background: #2d8cf0;
+    border-color: #2d8cf0;
+    color: #fff;
+    box-shadow: -1px 0 0 0 #2d8cf0;
+}

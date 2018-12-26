@@ -13,35 +13,49 @@
         <div class="option">
             <div class="search">
                 <div class="select">
-                    <Radio-group v-model="tab" type="button">
-                        <Radio  label="all">全部</Radio>
-                        <Radio  label="large">角色一</Radio>
-                        <Radio label="default">角色二</Radio>
-                        <Radio label="default2">角色三</Radio>
-                    </Radio-group>
+                    <Button  type="primary" icon="ios-person-outline">全部</Button>
+                    <Button  icon="ios-person-outline">角色一</Button>
+                    <Button  icon="ios-person-outline">角色二</Button>
+                    <Button  icon="ios-person-outline">角色三</Button>
+                    <Button  icon="ios-person-outline">角色四</Button>
+                    <Button  icon="ios-person-outline">角色五</Button>
                 </div>
                 <div class="left">
-                    <Input  icon="ios-search" placeholder="姓名" style="width: 300px"></Input>
+                    <span class="item">
+                        <span>公司：</span>
+                        <Select  style="width:200px">
+                            <Option>fvf</Option>
+                        </Select>
+                    </span>
+                    <span class="item">
+                        <span>角色：</span>
+                        <Select  style="width:200px">
+                            <Option>fvf</Option>
+                        </Select>
+                    </span>
                 </div>
                 <div class="right">
-                    <Button type="primary" class="update" size="large" @click="addMemberModel = true">添加</Button>
-                    <Modal
-                            title="添加成员"
-                            v-model="addMemberModel"
-                            class-name="vertical-center-modal  form addMemberModel" width="485">
-                        <div class="content">
-                            <Alert type="error" v-show="showError" show-icon></Alert>
-                            <div class="item">
-                                <span class="text">搜索成员：</span>
-                                <div class="right">
-                                    <Input type="text" style="width: 330px;" placeholder="请输入姓名搜索你要找的公司成员"></Input>
-                                </div>
-                            </div>
-                        </div>
-                    </Modal>
+                    <Input  icon="ios-search" placeholder="姓名" style="width: 300px"></Input>
                 </div>
             </div>
             <div class="clear"></div>
+            <div class="btn">
+                <Button type="primary" class="update" size="large" @click="addMemberModel = true">添加</Button>
+                <Modal
+                        title="添加成员"
+                        v-model="addMemberModel"
+                        class-name="vertical-center-modal  form addMemberModel" width="485">
+                    <div class="content">
+                        <Alert type="error" v-show="showError" show-icon></Alert>
+                        <div class="item">
+                            <span class="text">搜索成员：</span>
+                            <div class="right">
+                                <Input type="text" style="width: 330px;" placeholder="请输入姓名搜索你要找的公司成员"></Input>
+                            </div>
+                        </div>
+                    </div>
+                </Modal>
+            </div>
         </div>
         <div class="member_table">
             <Table :columns="memberTableColumns" :data="memberTableData"></Table>
@@ -55,10 +69,9 @@
 
 <script>
     export default {
-        name: 'memberManagement',
+        name: 'appInfo',
         data () {
             return {
-                tab:"all",
                 addMemberModel:false,
                 memberTableData:[],
                 memberTableColumns: [
@@ -222,7 +235,7 @@
         created(){
         },
         mounted(){
-          this.getMemberList();
+            this.getMemberList();
         },
         methods: {
             getMemberList(){
@@ -294,15 +307,15 @@
                 });
             },
             update(){
-              console.log("update");
+                console.log("update");
             },
             delete(){
                 console.log("delete");
             },
             createMember(){
-               /* this.$router.push({
-                    name: "appCreate"
-                });*/
+                /* this.$router.push({
+                 name: "appCreate"
+                 });*/
             },
             handleCurrentChange(val) {
                 this.curPage = val;

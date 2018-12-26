@@ -12,11 +12,12 @@
         <!--角色详情-->
         <div class="detail">
            <div class="select">
-               <Button  icon="ios-person-outline">角色一</Button>
-               <Button  icon="ios-person-outline">角色二</Button>
-               <Button type="primary" icon="ios-person-outline">角色三</Button>
-               <Button  icon="ios-person-outline">角色四</Button>
-               <Button  icon="ios-person-outline">角色五</Button>
+               <Radio-group v-model="tab" type="button" >
+                   <Radio label="large"><Icon  type="ios-person-outline"></Icon>角色一</Radio>
+                   <Radio label="default"><Icon type="ios-person-outline"></Icon>角色二</Radio>
+                   <Radio label="default2"><Icon type="ios-person-outline"></Icon>角色三</Radio>
+                   <Radio label="default3"><Icon type="ios-person-outline"></Icon>角色四</Radio>
+               </Radio-group>
            </div>
            <div class="module">
                <div class="item">
@@ -29,7 +30,7 @@
                                @click.prevent.native="handleCheckAll">全选</Checkbox>
                    </div>
                    <CheckboxGroup class="checkbox_group" v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                       <Checkbox label="权限一"></Checkbox>
+                       <Checkbox label="权限一权限一权限一权限一"></Checkbox>
                        <Checkbox label="权限二"></Checkbox>
                        <Checkbox label="权限三"></Checkbox>
                    </CheckboxGroup>
@@ -75,15 +76,17 @@
                    </CheckboxGroup>
                </div>
            </div>
+            <Button type="primary" class="update" size="large" @click="update">更新</Button>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'appInfo',
+        name: 'roleManagement',
         data () {
             return {
+                tab:"default",
                 indeterminate: true,
                 checkAll: false,
                 checkAllGroup: ['权限一', '权限二']
@@ -175,6 +178,32 @@
                 /* this.$router.push({
                  name: "appCreate"
                  });*/
+            },
+            handleCheckAll () {
+                if (this.indeterminate) {
+                    this.checkAll = false;
+                } else {
+                    this.checkAll = !this.checkAll;
+                }
+                this.indeterminate = false;
+
+                if (this.checkAll) {
+                    this.checkAllGroup = ['香蕉', '苹果', '西瓜'];
+                } else {
+                    this.checkAllGroup = [];
+                }
+            },
+            checkAllGroupChange (data) {
+                if (data.length === 3) {
+                    this.indeterminate = false;
+                    this.checkAll = true;
+                } else if (data.length > 0) {
+                    this.indeterminate = true;
+                    this.checkAll = false;
+                } else {
+                    this.indeterminate = false;
+                    this.checkAll = false;
+                }
             },
             handleCurrentChange(val) {
                 this.curPage = val;

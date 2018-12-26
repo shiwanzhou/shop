@@ -5,8 +5,8 @@
     <div class="main" :class="{'main-hide-text': shrink}" >
         <div class="sidebar-menu-con" :style="{width: shrink?'60px':'300px', overflow: shrink ? 'visible' : 'auto'}" style="display: flex">
             <div class="big_nav">
-                 <div class="item" v-for="(item,index) in serviceList"  :class="{current:index == tabIndex}"  @click="clickItem(index)" >
-                  <img :src="item.img">
+                <div class="item" v-for="(item,index) in serviceList"  :class="{current:index == tabIndex}"  @click="clickItem(index)" >
+                  <Icon :type="item.iconType" style="font-size: 20px"></Icon>
                 </div>
             </div>
             <shrinkable-menu 
@@ -52,15 +52,15 @@
                 <div class="header-avator-con">
                     <div class="link">
                         <div class="option">
-                            <Icon type="cube"></Icon>
+                            <Icon type="android-apps"></Icon>
                             <span class="text">产品</span>
                         </div>
                         <div class="option">
-                            <Icon type="pricetags"></Icon>
+                            <Icon type="headphone"></Icon>
                             <span class="text">支持</span>
                         </div>
                         <div class="option">
-                            <Icon type="wrench"></Icon>
+                            <Icon type="ios-paper-outline"></Icon>
                             <span class="text">文档</span>
                         </div>
                     </div>
@@ -113,7 +113,7 @@
                 menuTheme:"dark",
                 shrink: false,
                 userName: '',
-                tabIndex:0
+                tabIndex:1
             };
         },
         computed: {
@@ -168,7 +168,13 @@
             },
             clickItem(index){
                 this.tabIndex = index;
-                this.$store.commit('updateMenulist');
+                if(index == 0){
+                    this.$router.push({
+                        name: 'myApp'
+                    });
+                }  else {
+                    this.$store.commit('updateMenulist');
+                }
             },
             handleSubmenuChange (val) {
             },
