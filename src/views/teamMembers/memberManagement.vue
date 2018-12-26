@@ -7,7 +7,7 @@
 <template>
     <div class="appInfo memberManagement">
         <div class="title">成员管理</div>
-        <div class="desc">邀请伙伴加入，管理可以访问当前业务的团队成员并为他们分配<span class="blue">角色和权限</span>。</div>
+        <div class="desc">邀请伙伴加入，管理可以访问当前业务的团队成员并为他们分配<a class="blue" href="#/teamMembers/roleManagement">角色和权限</a>。</div>
         <div class="border"></div>
         <!--成员管理详情-->
         <div class="option">
@@ -87,8 +87,7 @@
                                     [
                                         h('div',{
                                             style: {
-                                                fontWeight:'bold',
-                                                fontSize:'14px'
+                                                fontSize:'12px'
                                             },
                                             domProps: {
                                                 innerHTML: params.row.name
@@ -152,8 +151,7 @@
                         render: (h, params) => {
                             return h('div',{
                                 style: {
-                                    fontWeight:'bold',
-                                    fontSize:'14px'
+                                    fontSize:'12px'
                                 },
                                 domProps: {
                                     innerHTML: params.row.company

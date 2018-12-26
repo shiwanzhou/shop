@@ -35,15 +35,15 @@
                 <div class="header-avator-con">
                     <div class="link">
                         <div class="option">
-                            <Icon type="cube"></Icon>
+                            <Icon type="android-apps" style="font-size: 16px;"></Icon>
                             <span class="text">产品</span>
                         </div>
                         <div class="option">
-                            <Icon type="pricetags"></Icon>
+                            <Icon type="headphone" style="font-size: 16px;"></Icon>
                             <span class="text">支持</span>
                         </div>
                         <div class="option">
-                            <Icon type="wrench"></Icon>
+                            <Icon type="ios-paper-outline" style="font-size: 16px;"></Icon>
                             <span class="text">文档</span>
                         </div>
                     </div>

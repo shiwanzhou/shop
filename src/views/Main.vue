@@ -52,15 +52,15 @@
                 <div class="header-avator-con">
                     <div class="link">
                         <div class="option">
-                            <Icon type="android-apps"></Icon>
+                            <Icon type="android-apps" style="font-size: 16px;"></Icon>
                             <span class="text">产品</span>
                         </div>
                         <div class="option">
-                            <Icon type="headphone"></Icon>
+                            <Icon type="headphone" style="font-size: 16px;"></Icon>
                             <span class="text">支持</span>
                         </div>
                         <div class="option">
-                            <Icon type="ios-paper-outline"></Icon>
+                            <Icon type="ios-paper-outline" style="font-size: 16px;"></Icon>
                             <span class="text">文档</span>
                         </div>
                     </div>
@@ -72,7 +72,7 @@
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
-                                    <DropdownItem name="ownSpace">帐号中心</DropdownItem>
+                                    <DropdownItem name="ownSpace" >帐号中心</DropdownItem>
                                     <DropdownItem name="loginout"  divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
@@ -183,6 +183,18 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
+                    const title = '你有未提交的修改内容';
+                    const content = '<p>注意：一旦离开，未提交的修改内容将会丢失。</p>';
+                    this.$Modal.confirm({
+                         title: title,
+                         content: content,
+                         okText: '离开',
+                         cancelText: '留在当前页面',
+                         onOk: () => {
+                         },
+                         onCancel: () => {
+                        }
+                    });
                 } else if (name === 'loginout') {
                     // 退出登录
                     this.$store.dispatch('logout', this);

@@ -151,9 +151,13 @@
         },
         methods: {
             start(){
-                this.$router.push({
-                    name: 'appInfo'
-                });
+                if(this.$store.state.app.serviceList[1].iconType == "ios-box"){
+                    location.href = this.$url+"#publicConfig/appInfo";
+                } else {
+                    this.$router.push({
+                        name: 'appInfo'
+                    });
+                }
             },
             cancelCreate(){
                 this.$router.push({
