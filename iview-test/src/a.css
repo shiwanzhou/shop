@@ -1,0 +1,520 @@
+
+
+
+/*公共样式*/
+html, body{background: #fff}
+a{color: #495060}
+em{font-style:normal;color: #909399;}
+.clear{clear: both}
+.blue{color: #2d8cf0}
+.header{background: #fff}
+.title{font-size: 18px;font-weight: bold;}
+.desc{font-size: 14px;}
+.ivu-form .ivu-form-item-label{font-size: 14px;}
+.ivu-input{font-size: 14px;}
+.page{text-align: right}
+.breadcrumb{margin-bottom: 15px;}
+.desc_text{
+    color: #909399;
+    font-size: 12px;
+}
+.main-header .navicon-con .app{
+    display: flex;
+    margin-left: 110px;
+    cursor: pointer;
+}
+.main-header .navicon-con .app .left{
+    width: 135px;
+    display: flex;;
+}
+.main-header .navicon-con .app .left .img{}
+.main-header .navicon-con .app .left .text{font-size: 14px;margin-top: 7px;}
+.main-header .navicon-con .app .left .img img{
+    width: 40px;
+    height: 35px;
+}
+.main-header .navicon-con .app .right{}
+.main-header .navicon-con .app .right .ivu-icon{width: 30px;font-size: 25px;margin-top: 4px;}
+.main-header .navicon-con .app_list{
+    position: absolute;
+    width: 165px;
+    top: 56px;
+    background: #fff;
+    border-radius: 4px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.2);
+    padding-top: 5px;
+    padding-bottom: 8px;
+    padding-left: 2px;
+    max-height: 250px;
+    overflow: auto;
+}
+.main-header .navicon-con .app_list .item{
+    display: flex;
+    cursor: pointer;
+}
+.main-header .navicon-con .app_list .item .img img{
+    width: 40px;
+    height: 35px;
+}
+.main-header .navicon-con .app_list .item .text{
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.header-avator-con .link{display: flex;justify-content: center;align-items: center;height: 60px;}
+.header-avator-con .link .option{margin-right: 40px;}
+.header-avator-con .link .option Icon{}
+.header-avator-con .link .option  .text{font-size: 14px;}
+
+
+
+/*表单基础样式*/
+.form .content{
+    width: 450px;
+    margin: 0 auto;
+    margin-bottom: 20px;
+    margin-top: 10px;
+}
+.form .item{
+    display: flex;
+    margin-bottom: 20px;
+}
+.form .item .text{
+    width: 70px;
+    text-align: right;
+}
+.form .item .text.channel_name_text{margin-top: 6px;}
+.form .item .right .desc_text{
+    color: #909399;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.form  .item.select_item  .remind_text{
+    margin-bottom: 20px;
+    width: 400px;
+    margin-left: 17px;
+}
+.form  .item.select_item .text{
+    width: 130px;
+    margin-top: 8px;
+}
+.form .item.select_item .right .desc_text{
+    width: 87%;
+}
+
+
+/*应用信息*/
+.appInfo {
+    margin-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 20px;
+    font-size: 14px;
+}
+.appInfo .title{;margin-bottom: 15px;;}
+.appInfo .desc{;height: 38px;margin-left: -1px;}
+.appInfo_detail {
+    margin-top: 55px;
+    margin-left: 50px;
+}
+.appInfo .border{
+    width: 103%;
+    box-shadow: 0 2px 1px 0px rgba(100, 100, 100, 0.1);
+    height: 2px;
+    margin-left: -17px;
+}
+.appInfo_detail .app_name{
+    display: flex;
+    margin-bottom: 25px;
+}
+.appInfo_detail .text{
+    width: 100px;
+    text-align: right;
+}
+.appInfo_detail .right{}
+.appInfo_detail .desc_text{
+    color: #909399;
+    font-size: 12px;
+    margin-top: 5px;
+}
+.appInfo_detail .app_name .text{
+    margin-top: 5px;
+}
+.appInfo_detail .app_name .right{}
+.appInfo_detail .system_platform{
+    display: flex;
+    margin-bottom: 25px;
+}
+.appInfo_detail .system_platform .right .checkbox label{
+    margin-right: 50px;
+}
+.appInfo_detail .icon{
+    margin-bottom: 25px;
+    display: flex;
+}
+.appInfo_detail .remarks{
+    margin-bottom: 35px;
+    display: flex;
+}
+.appInfo_detail .update{
+    margin-left: 32%;
+    margin-right: 30px;
+    margin-top: 28px;
+}
+.appInfo_detail .cancel{
+    margin-top: 28px;
+}
+.appManagement{}
+.appManagement .appkey_info{
+    margin-top: 25px;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+.appManagement .appkey_info .item{
+    display: flex;
+}
+.appManagement .appkey_info .item .ivu-form-item{width: 50%;}
+.appManagement .appkey_info .item  .ivu-form-item  .ivu-form-item-label{text-align: right}
+.appManagement .border{}
+.appManagement .appkey_info .btn{
+    margin-bottom: 25px;
+    margin-left: 98px;
+}
+.appManagement .appkey_info .btn button{
+    margin-right: 20px;
+}
+.appManagement .appInfo_detail{
+    display: flex;
+    margin-left: 30px;
+    padding-right: 30px;
+    width: 97%;
+    margin-top: 30px;
+}
+.appManagement .appInfo_detail .left_span{width: 50%;}
+.appManagement .appInfo_detail .right_span{ width: 50%;}
+.appManagement .appInfo_detail .system_platform .right .checkbox label{margin-right: 20px}
+.appManagement .update{
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.appManagement .ivu-input{width: 65%;}
+.appManagement .appInfo_detail .text{
+    text-align: right;
+    width: 100px;
+}
+.appManagement .appInfo_detail .app_name .text{}
+.appManagement .appInfo_detail .app_name .right .ivu-input{width: 70%}
+.appManagement .appInfo_detail .app_name .right{width: 75%;}
+.appManagement .appInfo_detail .remarks{}
+.appManagement .appInfo_detail .remarks .text{
+    width: 126px;
+    text-align: left;
+}
+.appManagement .appInfo_detail .remarks textarea{
+    width: 100%;
+}
+/*应用创建*/
+.appCreate .appInfo{
+    margin-top: 60px;
+    padding-left: 26px;
+    padding-right: 26px;
+    padding-top: 20px;
+}
+.appCreate .appInfo .border{
+    margin-left: -33px;
+    width: 104%;
+}
+.appCreate .appInfo .appInfo_detail{
+    margin: 0 auto;
+    width: 660px;
+    margin-top: 55px;
+}
+
+/*应用创建成功*/
+.appCreate_suc{padding-top: 60px;width: 600px;text-align: center;margin: 0 auto;}
+.appCreate_suc .icon{ color: #3bbf3b; font-size: 80px;}
+.appCreate_suc .title_text{
+    font-size: 32px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.appCreate_suc .desc{
+    color: #909399;
+    margin-bottom: 10px;
+}
+.appCreate_suc .info{}
+.appCreate_suc .info .detail_desc{
+    color: #bbbec4;
+    text-align: left;
+}
+.appCreate_suc .btn{
+    margin-top: 80px;
+}
+.appCreate_suc .btn button{
+    margin-right: 20px;
+}
+
+
+/*我的应用*/
+.myApp{
+    display: flex;
+    font-size: 14px;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 60px;
+    background-color: rgba(240, 242, 245, 1);
+}
+.myApp .left{
+    width: 100%;
+    padding-top: 35px;
+    padding-left: 35px;
+    padding-right: 35px;
+}
+.myApp .left .title{
+    margin-bottom: 20px;
+}
+.myApp .left .search{
+    display: flex;
+}
+.myApp .left .search .system_platform{}
+.myApp .left .search .system_platform .text{}
+.myApp .left .search .system_platform .select{}
+.myApp .left .search .input{
+    margin-left: 30px;
+}
+.myApp .left .btn{
+    display: flex;
+    margin-top: 30px;
+}
+.myApp .left .btn .left_btn{
+    width: 95%;
+}
+.myApp .left .btn .right_btn{
+    display: flex;
+}
+.myApp .left .btn .right_btn .change_card{
+    font-size: 25px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.myApp .left .btn .right_btn .change_table{
+    font-size: 25px;
+    margin-right: 15px;
+    cursor: pointer;
+}
+.myApp .left .btn .right_btn .blue i{
+    color: #2d8cf0
+}
+.myApp .left .appCard_list{
+    margin-top: 25px;
+}
+.myApp .left .appCard_list .page{margin-top: 20px;}
+.myApp .left .appCard_list .item{
+    margin-bottom: 25px;
+    float: left;
+    margin-right: 25px;
+}
+.myApp .left .appCard_list .item .img img{
+    width: 42px;
+}
+.myApp .left .appCard_list .item .title{
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+.myApp .left .appCard_list .item .text{
+    color: #909399;
+    margin-bottom: 10px;
+    height: 43px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    width: 210px;
+}
+.myApp .left .appCard_list .item .tag button{margin-right: 5px;}
+
+
+
+.myApp .right{
+    background: #fff;
+    padding-top: 35px;
+    padding-left: 35px;
+    padding-right: 35px;
+    width: 290px;
+}
+.myApp .right .card{
+    margin-top: 25px;
+}
+.myApp .right .item{
+    display: flex;
+}
+.myApp .right .item .item_text{
+    color: #2d8cf0;
+}
+.myApp .right .item .icon{
+    font-size: 30px;
+    margin-right: 8px;
+    color: #2d8cf0;
+}
+.myApp .right .item .small_title{
+    font-size: 16px;
+    font-weight: bold;
+}
+.myApp .right .item .text{
+    color: #909399;
+}
+
+/*成员管理*/
+.memberManagement{}
+.memberManagement .option{
+    padding: 30px;
+    margin-bottom: 20px;
+}
+.memberManagement .option .search{
+    margin-bottom: 20px;
+}
+.memberManagement .option .search .left{
+    float: left;
+}
+.memberManagement .option .search .left span.item{margin-right: 10px;}
+.memberManagement .option .search .right{
+    float: right;
+}
+.memberManagement .option .search .select{
+    padding-bottom: 30px;
+    border-bottom: 1px solid #e9eaec;
+    margin-bottom: 20px;
+}
+.memberManagement  .ivu-radio-group-button .ivu-radio-wrapper-checked{
+    background: #2d8cf0;
+    border-color: #2d8cf0;
+    color: #fff;
+    box-shadow: -1px 0 0 0 #2d8cf0;
+}
+.memberManagement .option .btn{
+    margin-top: 30px;
+    text-align: right;
+}
+.memberManagement .member_table{
+    padding: 30px;
+    margin-bottom: 20px;
+    margin-top: -50px;
+}
+.memberManagement .page{
+    margin-top: 40px;
+    text-align: right;
+}
+
+/*渠道号*/
+.channelNumber{}
+.channelNumber .option .search .left .subordinateChannel{margin-left: 10px;display: inline-block;}
+.channelNumber .option .search .btn{margin-top: 20px;}
+
+/*创建渠道弹框*/
+.createChannelModel .item .text.channel_name_text{margin-top: 6px;}
+.createChannelModel .item.select_item .text{width: 114px;}
+/*删除渠道*/
+.deleteChannelModel  .remind_text{
+    margin-bottom: 20px;
+    width: 400px;
+    margin-left: 17px;
+}
+.deleteChannelModel  .item .text{
+    width: 130px;
+    margin-top: 8px;
+}
+.deleteChannelModel .item .right .desc_text{
+    width: 87%;
+}
+/*批量导入*/
+.batchImportModel {}
+.batchImportModel .btn{
+    margin-top: 20px;
+    margin-bottom: 8px;
+}
+.batchImportModel .btn button{margin-right: 15px;}
+.batchImportModel .remind_text p{
+    height: 22px;
+}
+/*用户登录*/
+.userLogin .form{margin-top: 30px}
+/*添加成员*/
+.addMemberModel{
+}
+.addMemberModel .content{
+    height:310px;
+}
+.addMemberModel .item .text{
+}
+.addMemberModel .item .right input{
+    height: 70px;
+}
+/*权限管理*/
+.roleManagement{}
+.roleManagement .detail{}
+.roleManagement .select{
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+.roleManagement .module .item {
+    border-top: 1px solid #e9eaec;
+    padding: 20px;
+    position: relative;
+}
+.roleManagement .module .item .left{
+    margin-right: 35px;
+    position: absolute;
+    top: 35px;
+    width: 155px;
+}
+.roleManagement .module .item .left .name{margin-right: 35px;}
+.roleManagement .module .item .checkbox_group{
+    display: inline-block;
+    width: 100%;
+    margin-left: 165px;
+}
+.roleManagement .module .item .checkbox_group label{margin-right: 35px;line-height: 50px;}
+.roleManagement .detail .update{
+    margin-left: 20px;
+    margin-top: 20px;
+}
+.roleManagement  .ivu-radio-group-button .ivu-radio-wrapper-checked{
+    background: #2d8cf0;
+    border-color: #2d8cf0;
+    color: #fff;
+    box-shadow: -1px 0 0 0 #2d8cf0;
+}
+
+/*账号中心*/
+.accountCenter{
+    padding-left: -26px;
+}
+.accountCenter .content{
+    padding-top: 30px;
+    width: 975px;
+    margin: 0 auto;
+}
+.accountCenter .item_table_app{}
+.accountCenter .item_table_app .text{
+    margin-left: -2px;
+    position: relative;
+    left: 0px;
+    width: 73px;
+}
+.accountCenter .item_table_app .right{
+    width: 93%;
+}
+.accountCenter .item_table_platform{}
+.accountCenter .item_table_platform .text{
+    width: 119px;
+    margin-left: -48px;
+    left: -2px;
+}
+.accountCenter .item_table_platform .right{
+    width: 93%;
+}

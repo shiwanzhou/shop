@@ -1,0 +1,160 @@
+*, :after, :before{box-sizing:content-box}
+body{background: #fff;overflow: auto}
+.clear{clear: both}
+
+/*开关控制*/
+.control {padding: 35px;font-size: 14px;font-family:PingFangSC-Semibold;float: left;width: 73%;position: relative;}
+.control .title{ font-size: 20px; font-weight: bold; height: 40px; color: rgba(90,94,102,1);}
+.control .small_title{ color: #333; font-size: 16px; margin-bottom: 8px;  font-weight: bold;}
+.control .radio{  cursor: pointer;}
+.control .input_value{ text-align: center; margin-left: 6px; margin-right: 6px;width: 60px;   height: 32px;  border: 1px solid #E6E6E6; border-radius: 4px;}
+.control .switch{position: absolute;top: 48px;right: 2%;}
+.control .switch span{ margin-right: 50px; }
+.control .introduce{  color: #909399; font-size: 14px; line-height: 22px; margin-bottom: 13px;  }
+.control .control_item{  padding: 25px;  border-bottom: 1px solid #EBEEF5;  position: relative; padding-bottom: 33px;  }
+.control .control_item.realname_auth  .compulsory_reaName_text{margin-right: 50px;}
+.user_center_task{  height: 141px; }
+.user_center_task .introduce{  color: #909399;  font-size: 14px; }
+.user_center_task .content{ width: 664px; }
+.user_center_task .content .item{ float: left;margin-right: 30px; margin-bottom: 21px;position: relative}
+.user_center_task .content .item .error{position: absolute; left: 85px;   color: red;display: none;width: 100px}
+.user_center_task .content .item.weixin .error{left: 136px}
+.user_center_task .content .item em.gray{color: #ccc}
+.user_center_task .content .item em.gray input{color: #ccc}
+.induced_binding  .content .error{position: absolute;color: red;  left: 280px;}
+.induced_binding  .content .error.interval{left: 494px}
+.landing_page_control .switch{  position: static; }
+.landing_page_control .switch .text{}
+.control .button{ margin-top: 22px; margin-left: 25px;  }
+.control .button .btn{ color: #fff; text-align: center;line-height: 32px; cursor: pointer;  width: 60px; height:32px; background:rgba(4,134,254,1); border-radius: 4px;  }
+.control .button .btn.update{ float: left; }
+.control .button .btn.cancel{ color: rgba(4,134,254,1);border: 1px solid #E6E6E6;  float: left;  background: #fff;   margin-left: 30px;  }
+.control .button.copy_btn{position: absolute;  top: 13px; left: 46%;}
+.control .button.copy_btn .btn{float: left}
+.control .button.copy_btn .copy{margin-right: 25px;}
+.control .button.copy_btn .restore{width: 90px;}
+
+
+
+
+/*渠道搜索*/
+.search {float: left;width: 16%;height: 763px;padding-left:25px;padding-top: 36px;border-right: 1px solid #EBEEF5;}
+.search .app_name{margin-bottom: 22px;position: relative;/* display: flex; */}
+.search .app_name .logo{float: left;width: 41px;height: 51px;}
+.search .app_name .logo img{width: 38px;height: 37px;}
+.search .app_name .arrow{   width: 20px;height: 30px;position: absolute; right: 28px;   top: 4px;  cursor: pointer;  }
+.search .app_name .arrow.top{transform: rotate(180deg);}
+.search .app_name .arrow img{   width: 20px;  height: 30px;}
+.search .app_name .search_app{position: absolute;z-index: 2;width: 221px;height: 278px;background: #f6f6f6;top: 49px;overflow-y: auto;   overflow-x: hidden;}
+.search .app_name .search_app input{background:#f2f2f2;padding-left: 7px;margin-right: 6px;width: 212px;height: 32px;border: 1px solid #E6E6E6;border-radius: 4px;font-size: 14px;margin-bottom: 9px;}
+.search .app_name .item{display: flex;  line-height: 20px;  height: 49px;  margin-left: 4px;}
+.search .app_name .item .logo{}
+.search .app_name .item .name{}
+.search .app_name .item .note_information{}
+
+.search .app_name .name{font-size: 16px;left: 4px;position: relative;top: 10px;font-weight: bold;}
+.search .app_name .note_information{ visibility: hidden;  }
+.search .edition{}
+.search .edition .text{ float: left;  width: 88%;  height: 26px;}
+.search .edition select{  font-size:14px;cursor: pointer; margin-bottom: 20px;  width: 88%;  border: 1px solid #E6E6E6;   border-radius: 4px; height: 29px;}
+.search .edition select option{}
+.search .search_channel{ margin-bottom: 12px;position: relative;margin-top: 18px;}
+.search .search_channel input{ width: 86%; height: 30px; border: 1px solid #E6E6E6;border-radius: 4px; padding-left: 10px;}
+.search .search_channel img{position: absolute; width: 27px;  height: 27px;  right: 13%;  top: 1px; cursor: pointer;}
+.search .channel_item{ font-size: 14px; height: 350px; overflow: auto;    width: 90%;}
+.search .channel_item .item{ cursor: pointer;  position: relative;  width: 212px; margin-bottom: -11px;line-height: 25px; }
+.search .channel_item .arrow{  top: 5px; right: 3px;  position: absolute;border-left: 5px solid transparent; border-right: 5px solid transparent;   border-top: 10px solid #000;}
+.search .channel_item .arrow.top{transform: rotate(180deg)}
+.search .channel_item .item .text{}
+.search .channel_item .item .menu-child {display: none;}
+.search .channel_item .item .menu-child li{  margin-left: 10px;  line-height: 25px; }
+.search .channel_item .item.current a{color: rgba(4,134,254,1)}
+
+.search .edition .edition_info{ cursor:pointer;border: 1px solid #E6E6E6;width: 89%;margin-bottom: 22px; position: relative;  display: flex;  float: left;   height: 30px; border-radius: 4px;}
+.search .edition .edition_info .logo{float: left;width: 41px;height: 51px;}
+.search .edition .edition_info .logo img{width: 38px;height: 37px;}
+.search .edition .edition_info .name{top: 5px;font-weight: normal;}
+.search .edition .edition_info .arrow{  width: 20px; height: 30px;position: absolute;  right: 13px;   top: 0px;   cursor: pointer; }
+.search .edition .edition_info .arrow.top{transform: rotate(180deg);}
+.search .edition .edition_info .arrow img{   width: 20px;  height: 30px;}
+.search .edition .edition_info .select{ width:100%}
+.search .edition .edition_info .search_app{position: absolute;z-index: 2;width: 100%;height:auto;max-height: 436px;left:0;background: #f6f6f6;top: 30px;overflow-y: auto;   overflow-x: hidden;}
+.search .edition .edition_info .search_app input{background:#f2f2f2;padding-left: 7px;margin-right: 6px;width: 275px;height: 32px;border: 1px solid #E6E6E6;border-radius: 4px;font-size: 14px;margin-bottom: 9px;}
+.search .edition .edition_info .item{display: flex;  line-height: 20px;  height: 49px;  margin-left: 4px;}
+.search .edition .edition_info .item .name{margin-top: 9px;font-weight: normal;}
+.search .edition .edition_info .item .note_information{display: none}
+
+
+
+.message{width: 440px;  height:300px;background: #fff;padding-left: 20px;  padding-top: 15px;  }
+.message .close{cursor: pointer}
+.message .close img{width: 28px;height: 28px; position: absolute; right: 17px; top: 16px;}
+.message .button{position: absolute;bottom: 29px; text-align: center;  left: 54%;  border: 1px solid #ddff;   width: 62px;  height: 30px; line-height: 30px;cursor: pointer;}
+.message .button.submit{background: rgba(4,134,254,1);color: #fff;}
+.message .msg{text-align: center;   padding-top: 125px;}
+.message .title{font-size: 18px;}
+.message .text{margin-top: 10px;color: #ccc}
+.message .item_app{margin-top: 30px;}
+.message .item_app label{font-size: 16px;}
+.message .cancel_copy{ left: 30%;}
+.message .item_app select{width: 278px;font-size: 16px;}
+.message .app_name{margin-bottom: 22px;position: relative;display: flex;}
+.message .app_name .logo{float: left;width: 41px;height: 51px;}
+.message .app_name .logo img{width: 38px;height: 37px;}
+.message .app_name .name{}
+.message .app_name .arrow{   width: 20px;height: 30px;position: absolute; right: 80px;  top: -1px;  cursor: pointer;  }
+.message .app_name .arrow.top{transform: rotate(180deg);}
+.message .app_name .arrow img{   width: 20px;  height: 30px;}
+.message .app_name .select{width: 275px;  border: 1px solid #E6E6E6;  border-radius: 4px; height: 27px; line-height: 27px;  padding-left: 8px;}
+.message .app_name .search_app{position: absolute;z-index: 2;width: 285px;height: 278px;left:79px;background: #f6f6f6;top: 22px;overflow-y: auto;   overflow-x: hidden;}
+.message .app_name .search_app input{background:#f2f2f2;padding-left: 7px;margin-right: 6px;width: 275px;height: 32px;border: 1px solid #E6E6E6;border-radius: 4px;font-size: 14px;margin-bottom: 9px;}
+.message .app_name .item{display: flex;  line-height: 20px;  height: 49px;  margin-left: 4px;}
+.message .app_name .item .name{margin-top: 9px;}
+.message .app_name .item .note_information{display: none}
+
+
+.message .channel_name{margin-bottom: 22px;position: relative;display: flex;}
+.message .channel_name .logo{float: left;width: 41px;height: 51px;}
+.message .channel_name .logo img{width: 38px;height: 37px;}
+.message .channel_name .name{}
+.message .channel_name .arrow{   width: 20px;height: 30px;position: absolute; right: 80px;  top: -1px;  cursor: pointer;  }
+.message .channel_name .arrow.top{transform: rotate(180deg);}
+.message .channel_name .arrow img{   width: 20px;  height: 30px;}
+.message .channel_name .select{   width: 275px; border: 1px solid #E6E6E6;  border-radius: 4px; height: 27px; line-height: 27px;  padding-left: 8px;}
+.message .channel_name .search_app{position: absolute;z-index: 2;width: 285px;height:auto;max-height: 278px;left:79px;background: #f6f6f6;top: 22px;overflow-y: auto;   overflow-x: hidden;}
+.message .channel_name .search_app input{background:#f2f2f2;padding-left: 7px;margin-right: 6px;width: 275px;height: 32px;border: 1px solid #E6E6E6;border-radius: 4px;font-size: 14px;margin-bottom: 9px;}
+.message .channel_name .item{display: flex;  line-height: 20px;  height: 49px;  margin-left: 4px;}
+.message .channel_name .item .name{margin-top: 9px;}
+.message .channel_name .item .note_information{display: none}
+
+
+.message .version_name{margin-bottom: 22px;position: relative;display: flex;}
+.message .version_name .logo{float: left;width: 41px;height: 51px;}
+.message .version_name .logo img{width: 38px;height: 37px;}
+.message .version_name .name{}
+.message .version_name .arrow{   width: 20px;height: 30px;position: absolute; right: 80px;  top: -1px;  cursor: pointer; }
+.message .version_name .arrow.top{transform: rotate(180deg);}
+.message .version_name .arrow img{   width: 20px;  height: 30px;}
+.message .version_name .select{ width: 275px; border: 1px solid #E6E6E6;  border-radius: 4px; height: 27px; line-height: 27px;  padding-left: 8px;}
+.message .version_name .search_app{position: absolute;z-index: 2;width: 285px;height:auto;max-height: 278px;left:79px;background: #f6f6f6;top: 22px;overflow-y: auto;   overflow-x: hidden;}
+.message .version_name .search_app input{background:#f2f2f2;padding-left: 7px;margin-right: 6px;width: 275px;height: 32px;border: 1px solid #E6E6E6;border-radius: 4px;font-size: 14px;margin-bottom: 9px;}
+.message .version_name .item{display: flex;  line-height: 20px;  height: 49px;  margin-left: 4px;}
+.message .version_name .item .name{margin-top: 9px;}
+.message .version_name .item .note_information{display: none}
+
+
+
+
+
+/*确认恢复默认*/
+.restore_submit{width: 440px;  height:300px;background: #fff;padding-left: 20px;  padding-top: 15px;  }
+.restore_submit .close{cursor: pointer}
+.restore_submit .close img{width: 28px;height: 28px; position: absolute; right: 17px; top: 16px;}
+.restore_submit .button{position: absolute;bottom: 29px; text-align: center;  left: 54%;  border: 1px solid #ddff;   width: 62px;  height: 30px; line-height: 30px;cursor: pointer;}
+.restore_submit .button.submit{background: rgba(4,134,254,1);color: #fff;}
+.restore_submit .cancel_copy{ left: 30%;}
+.restore_submit .title{font-size: 18px;margin-top: 113px;text-align: center}
+
+
+
+
