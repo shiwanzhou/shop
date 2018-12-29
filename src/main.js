@@ -122,6 +122,8 @@ Vue.prototype.$sortObj = function (obj) {
 /* 设置全局基础页码配置 */
 Vue.prototype.$pageSize = 10;
 Vue.prototype.$pageSizeArray = [10, 15, 20, 25];
+Vue.prototype.$ajaxErrorMsg = "请求出错，请稍候再试";
+
 
 
 

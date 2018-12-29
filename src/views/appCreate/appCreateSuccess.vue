@@ -73,7 +73,7 @@
             <div class="appCreate_suc">
                 <Icon class="icon" type="checkmark-circled"></Icon>
                 <div class="title_text">创建成功</div>
-                <div class="desc">请立即阅读接入指南后，开始服务集成。</div>
+                <div class="desc">立即阅读指南，了解技术中台所提供的服务。</div>
                 <Form :model="appCreateSucInfo" class="info" :label-width="100" >
                     <FormItem label="App Key：">
                         <Input v-model="appCreateSucInfo.key" disabled ></Input>
@@ -81,9 +81,9 @@
                     <FormItem label="App Secret：">
                         <Input v-model="appCreateSucInfo.key" disabled ></Input>
                     </FormItem>
-                    <FormItem label="App ID：">
+                    <FormItem label="Game ID：">
                         <Input v-model="appCreateSucInfo.key" disabled ></Input>
-                        <div class="detail_desc">原Game ID，仅用于系统内部识别唯一业务的标识。</div>
+                        <div class="detail_desc" style="display:none">原Game ID，仅用于系统内部识别唯一业务的标识。</div>
                     </FormItem>
                 </Form>
                 <div class="btn">

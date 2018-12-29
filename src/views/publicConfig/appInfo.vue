@@ -83,8 +83,7 @@
                        <div class="right">
                            <Upload
                                    ref="upload"
-                                   :show-upload-list="false"
-                                   :default-file-list="defaultList"
+                                   :show-upload-list="true"
                                    :on-success="handleSuccess"
                                    :on-error="handleError"
                                    :format="['jpg','jpeg','png']"
@@ -92,10 +91,10 @@
                                    :on-format-error="handleFormatError"
                                    :on-exceeded-size="handleMaxSize"
                                    :before-upload="handleBeforeUpload"
-                                   multiple
-                                   type="drag"
-                                   action="//jsonplaceholder.typicode.com/posts/"
-                                   style="display: inline-block;">
+                                   multiple="false"
+                                   :action="uploadAction"
+                                   :data="uploadData"
+                                   name="photo">
                                <Button type="ghost" icon="ios-cloud-upload-outline">上传</Button>
                            </Upload>
                            <div class="desc_text">不超过500KB, 长宽比例1:1的 .jpg或.png文件。</div>
@@ -127,12 +126,23 @@
         name: 'appInfo',
         data () {
             return {
-                form:{
-                    systemPlatform:[],
-                    remarks:"",
+                api:{
+                    "createChannel":this.$url+"channel/getChannelList",  //创建渠道
+                },
+                error:"",
+                showError:0,
+                form: {
+                    name:"",
+                    systemPlatform: [],
+                    remarks: "",
+                    uploadImgUrl:"",
                     appKey:"appkeyappkeyappkeyappkey",
                     appSecret:"App SecretApp SecretApp Secret",
                     appID:""
+                },
+                uploadAction:this.$url+"upload/servicesPic",
+                uploadData:{
+                    "pic_type":"service_icon"
                 },
                 copyStatus:0
             };
@@ -142,7 +152,7 @@
         created(){
         },
         mounted(){
-            this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
+          /*  this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                 console.log(res)
                 let form = {
                     systemPlatform:['HTML5'],
@@ -154,15 +164,14 @@
                 this.form = form;
             }).catch((err) => {
                 this.$Message.error('This is an error tip');
-            });
+            });*/
         },
         methods: {
             handleSuccess (res, file) {
-                file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-                file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+                this.form.uploadImgUrl =   res.data.url;
+                file.url =   res.data.url;
             },
             handleError (res, file) {
-                console.log(res)
                 this.$Notice.warning({
                     title: '上传失败！',
                     desc: res
@@ -170,18 +179,15 @@
             },
             handleFormatError (file) {
                 this.$Notice.warning({
-                    title: 'The file format is incorrect',
+                    title: '文件格式不对！',
                     desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
                 });
             },
             handleMaxSize (file) {
                 this.$Notice.warning({
-                    title: 'Exceeding file size limit',
-                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+                    title: '文件大小有限制！',
+                    desc: 'File  ' + file.name + ' is too large, no more than 500kb.'
                 });
-            },
-            handleBeforeUpload () {
-
             },
             copyStr(str){
                 let $this = this;

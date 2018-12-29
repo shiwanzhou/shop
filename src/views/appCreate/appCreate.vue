@@ -71,11 +71,12 @@
             <div class="border"></div>
             <!--应用信息详情-->
             <Form :model="form" label-position="left" :label-width="100">
+                <Alert type="error" v-show="showError" show-icon>{{error}}</Alert>
                 <div class="appInfo_detail">
                     <div class="app_name">
                         <span class="text">应用名称：</span>
                         <div class="right">
-                            <Input type="text" style="width: 500px;"></Input>
+                            <Input type="text" v-model="form.name" style="width: 500px;"></Input>
                             <div class="desc_text">1-100个字符。</div>
                         </div>
                     </div>
@@ -86,20 +87,20 @@
                                 <CheckboxGroup v-model="form.systemPlatform" >
                                     <Checkbox label="iOS" size="large"></Checkbox>
                                     <Checkbox label="Android" size="large"></Checkbox>
-                                    <Checkbox label="HTML5" size="large"></Checkbox>
                                     <Checkbox label="小程序" size="large"></Checkbox>
+                                    <Checkbox label="网页" size="large"></Checkbox>
+                                    <Checkbox label="桌面客户端" size="large"></Checkbox>
                                 </CheckboxGroup>
                             </div>
                             <div class="desc_text">当你的业务需要跨平台使用用户数据时请多选。</div>
                         </div>
                     </div>
                     <div class="icon">
-                        <span class="text">图标：</span>
+                        <span class="text">图标<em>（可选）</em>：</span>
                         <div class="right">
                             <Upload
                                 ref="upload"
-                                :show-upload-list="false"
-                                :default-file-list="defaultList"
+                                :show-upload-list="true"
                                 :on-success="handleSuccess"
                                 :on-error="handleError"
                                 :format="['jpg','jpeg','png']"
@@ -107,10 +108,10 @@
                                 :on-format-error="handleFormatError"
                                 :on-exceeded-size="handleMaxSize"
                                 :before-upload="handleBeforeUpload"
-                                multiple
-                                type="drag"
-                                action="//jsonplaceholder.typicode.com/posts/"
-                                style="display: inline-block;">
+                                multiple="false"
+                                :action="uploadAction"
+                                :data="uploadData"
+                                name="photo">
                                 <Button type="ghost" icon="ios-cloud-upload-outline">上传</Button>
                             </Upload>
                             <div class="desc_text">不超过500KB, 长宽比例1:1的 .jpg或.png文件。</div>
@@ -119,7 +120,7 @@
                     <div class="remarks">
                         <span class="text">备注<em>（可选）</em>：</span>
                         <div class="right">
-                            <Input v-model="form.remarks" style="width: 500px;" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                            <Input v-model="form.remarks" style="width: 500px;" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入备注"></Input>
                             <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>
                         </div>
                     </div>
@@ -139,9 +140,20 @@
         name: 'appInfo',
         data () {
             return {
+                api:{
+                    "createChannel":this.$url+"channel/getChannelList",  //创建渠道
+                },
+                error:"",
+                showError:0,
                 form: {
+                    name:"",
                     systemPlatform: [],
-                    remarks: ""
+                    remarks: "",
+                    uploadImgUrl:""
+                },
+                uploadAction:this.$url+"upload/servicesPic",
+                uploadData:{
+                    "pic_type":"service_icon"
                 },
                 currentApp: "",
                 currentAppSrc: "",
@@ -168,35 +180,14 @@
         created(){
         },
         mounted(){
-            this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
-                console.log(res)
-                let form = {
-                    systemPlatform:['HTML5'],
-                    remarks:"平台，强制联网，微信登录，小程序传播222"
-                }
-                let appList = [
-                    {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡"},
-                    {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷"},
-                    {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷2"},
-                    {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷3"},
-                    {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷4"}
-                ];
-                this.form = form;
-                this.appList = appList;
-                this.currentApp = "梦幻家园";
-                this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
-                this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
-            }).catch((err) => {
-                this.$Message.error('This is an error tip');
-            });
+
         },
         methods: {
             handleSuccess (res, file) {
-                file.url = 'https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar';
-                file.name = '7eb99afb9d5f317c912f08b5212fd69a';
+                this.form.uploadImgUrl =   res.data.url;
+                file.url =   res.data.url;
             },
             handleError (res, file) {
-                console.log(res)
                 this.$Notice.warning({
                     title: '上传失败！',
                     desc: res
@@ -204,23 +195,45 @@
             },
             handleFormatError (file) {
                 this.$Notice.warning({
-                    title: 'The file format is incorrect',
+                    title: '文件格式不对！',
                     desc: 'File format of ' + file.name + ' is incorrect, please select jpg or png.'
                 });
             },
             handleMaxSize (file) {
                 this.$Notice.warning({
-                    title: 'Exceeding file size limit',
-                    desc: 'File  ' + file.name + ' is too large, no more than 2M.'
+                    title: '文件大小有限制！',
+                    desc: 'File  ' + file.name + ' is too large, no more than 500kb.'
                 });
-            },
-            handleBeforeUpload () {
-
             },
             create(){
-                this.$router.push({
-                    name: 'appCreateSuc'
-                });
+                if(this.form.name == ""){
+                    this.showError = 1;
+                    this.error = "请输入应用名称！";
+                } else if(!this.form.systemPlatform.length){
+                    this.showError = 1;
+                    this.error = "请选择系统平台！";
+                }
+                var param  = {
+                    name:this.form.name,
+                    systemPlatform: this.form.systemPlatform,
+                    remarks: this.form.remarks,
+                    uploadImgUrl:this.form.uploadImgUrl
+                }
+                if(!this.showError){
+                    console.log(param)
+                    this.$post(this.api.createChannel, param).then((res) =>{
+                        console.log(res)
+                        if(res.code === 1){
+                            this.$router.push({
+                                name: 'appCreateSuc'
+                            })
+                        } else {
+                            this.$Message.error(res.msg);
+                        }
+                    }).catch((err) => {
+                        this.$Message.error(this.$ajaxErrorMsg);
+                    });
+                }
             },
             cancelCreate(){
                 this.$router.replace({
