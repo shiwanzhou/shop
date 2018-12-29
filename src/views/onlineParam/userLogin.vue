@@ -4,7 +4,7 @@
 
 <template>
     <div class="appInfo userLogin">
-        <div class="title">用户登录</div>
+        <div class="title" id="aaa">用户登录</div>
         <div class="desc">仅用于alpha0.5版本测试客户端登录DEMO。</div>
         <div class="border"></div>
         <!--用户登录信息详情-->
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+    import  $  from  'jquery';
     export default {
         name: 'userLogin',
         data () {
@@ -37,6 +38,8 @@
             };
         },
         mounted(){
+            console.log($)
+            console.log($("#aaa").text())
             this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                 console.log(res)
                 let formItem = {

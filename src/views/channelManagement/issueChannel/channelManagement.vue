@@ -35,22 +35,26 @@
                             title="创建渠道"
                             v-model="createChannelModel"
                             class-name="vertical-center-modal  form createChannelModel" width="650">
-                        <div class="content">
-                            <Alert type="error" v-show="showError" show-icon></Alert>
-                            <div class="item">
-                                <span class="text channel_name_text">渠道名称：</span>
-                                <div class="right">
-                                    <Input type="text" style="width: 330px;" placeholder="请输入渠道名称"></Input>
-                                    <div class="desc_text">1-100个字符。用于协作沟通识别指定的渠道号。</div>
+                           <div class="content">
+                                <Alert type="error" v-show="showError" show-icon>{{error.createChannelError}}</Alert>
+                                <div class="item">
+                                    <span class="text channel_name_text">渠道名称：</span>
+                                    <div class="right">
+                                        <Input   style="width: 330px;" v-model="createChannelParam.channelName" placeholder="请输入渠道名称"></Input>
+                                        <div class="desc_text">1-100个字符。用于协作沟通识别指定的渠道号。</div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="item">
-                                <span class="text">备注<em>(可选)</em>：</span>
-                                <div class="right">
-                                    <Input type="textarea" :rows="4"  style="width: 330px; " placeholder="如有必要，请说明添加渠道号的场景与用途。"></Input>
-                                    <div class="desc_text"> 1-500个字符。如：腾讯应用宝。</div>
+                                <div class="item">
+                                    <span class="text">备注<em>(可选)</em>：</span>
+                                    <div class="right">
+                                        <Input type="textarea"  :rows="4"  v-model="createChannelParam.remarks"   style="width: 330px; " placeholder="如有必要，请说明添加渠道号的场景与用途。"></Input>
+                                        <div class="desc_text"> 1-500个字符。如：腾讯应用宝。</div>
+                                    </div>
                                 </div>
-                            </div>
+                           </div>
+                        <div slot="footer">
+                            <Button type="text" size="large" @click="createChannelModelCancel">取消</Button>
+                            <Button type="primary" size="large" @click="createChannelModelOk">创建</Button>
                         </div>
                     </Modal>
                 </div>
@@ -62,6 +66,9 @@
             <Modal
                     title="删除渠道"
                     v-model="deleteChannelModel"
+                    @on-ok="deleteChannelModelOk"
+                    @on-cancel="deleteChannelModelCancel"
+                    :loading="loading"
                     class-name="vertical-center-modal  form deleteChannelModel" width="485">
                 <div class="content">
                     <Alert type="error" v-show="showError" show-icon></Alert>
@@ -71,18 +78,24 @@
                     <div class="item">
                         <span class="text">所属渠道：</span>
                         <div class="right">
-                            <Select placeholder="请选择渠道"  v-model="select1" slot="prepend" style="width: 320px">
-                                <Option value="http">http://</Option>
-                                <Option value="https">https://</Option>
+                            <Select placeholder="请选择渠道"  v-model="currentSelectBelongChannel" slot="prepend" style="width: 320px">
+                                <Option v-for="item in belongChannels"  :value="item.channelName">{{item.channelName}}</Option>
                             </Select>
                             <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
                         </div>
                     </div>
                 </div>
+                <div slot="footer">
+                    <Button type="text" size="large" @click="deleteChannelModelCancel">取消</Button>
+                    <Button type="primary" size="large" @click="deleteChannelModelOk">修改</Button>
+                </div>
             </Modal>
             <Modal
                     title="修改所属渠道"
                     v-model="updateChannelModel"
+                    @on-ok="updateChannelModelOk"
+                    @on-cancel="updateChannelModelCancel"
+                    :loading="loading"
                     class-name="vertical-center-modal  form deleteChannelModel" width="485">
                 <div class="content">
                     <Alert type="error" v-show="showError" show-icon></Alert>
@@ -92,13 +105,16 @@
                     <div class="item">
                         <span class="text">所属渠道：</span>
                         <div class="right">
-                            <Select placeholder="请选择渠道" v-model="select1" slot="prepend" style="width: 320px">
-                                <Option value="http">http://</Option>
-                                <Option value="https">https://</Option>
+                            <Select  v-model="currentSelectBelongChannel" placeholder="请选择渠道" slot="prepend" style="width: 320px">
+                                <Option v-for="item in belongChannels"  :value="item.channelName">{{item.channelName}}</Option>
                             </Select>
                             <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
                         </div>
                     </div>
+                </div>
+                <div slot="footer">
+                    <Button type="text" size="large" @click="updateChannelModelCancel">取消</Button>
+                    <Button type="primary" size="large" @click="updateChannelModelOk">修改</Button>
                 </div>
             </Modal>
             <div class="clear"></div>
@@ -114,10 +130,27 @@
         name: 'channelManagement',
         data () {
             return {
+                api:{
+                    "getChannelList":this.$url+"channel/getAllChannel", //获取渠道列表
+                    "createChannel":this.$url+"channel/createChannel",  //创建渠道
+                    "updateChannel":this.$url+"channel/updateChannel",   //修改渠道
+                    "deleteChannel":this.$url+"channel/deleteChannel"   //删除渠道
+                },
                 createChannelModel:false,
                 deleteChannelModel:false,
                 updateChannelModel:false,
                 showError:false,
+                createChannelParam:{
+                    channelName:"",
+                    remarks:""
+                },
+                currentSelectBelongChannel:"",
+                belongChannels:[],
+                error:{
+                    createChannelError:"",
+                    deleteChannelError:"",
+                    updateChannelError:""
+                },
                 searchOption:{
                     channelNumberName:"",
                     subordinateChannel:[]
@@ -126,15 +159,15 @@
                 channelNumberTableColumns: [
                     {
                         title: '渠道号名称 ',
-                        key: 'name'
+                        key: 'belongChannelName'
                     },
                     {
                         title: '渠道ID',
-                        key: 'channelID',
+                        key: 'identifier',
                     },
                     {
                         title: '备注',
-                        key: 'remarks',
+                        key: 'remark',
                     },
                     {
                         title: '渠道号数量',
@@ -142,17 +175,18 @@
                     },
                     {
                         title: '创建者',
-                        key: 'creator'
+                        key: 'username'
                     },
                     {
                         title: '创建时间',
-                        key: 'createTime',
+                        key: 'createdDate',
                         sortable: true
                     },
                     {
                         title: '操作',
                         key: 'operation',
                         render: (h, params) => {
+                            let _this = this;
                             return h('div',{
                                 style: {
                                     "display":"flex",
@@ -171,7 +205,10 @@
                                         cursor: "pointer"
                                     },
                                     on: {
-                                        click: this.update
+                                        click:function(event) {
+                                             event.preventDefault();
+                                            _this.update(params.row.channelID)
+                                        }
                                     }
                                 }),
                                 h('span',{
@@ -183,7 +220,10 @@
                                         cursor: "pointer"
                                     },
                                     on: {
-                                        click: this.delete
+                                        click:function(event) {
+                                            event.preventDefault();
+                                            _this.delete(params.row.channelID)
+                                        }
                                     }
                                 })
                             ]);
@@ -203,92 +243,147 @@
             this.getChannelNumberList();
         },
         methods: {
+            /*搜索渠道号列表*/
             search(){
-                console.log(this.searchOption.channelNumberName)
+                this.getChannelNumberList(this.searchOption.channelNumberName);
             },
-            update(){
-                this.updateChannelModel = true;
+            /*获取渠道号列表*/
+            getChannelNumberList(channelName){
+                var param = {
+                    "page":this.curPage,
+                    "pageSize":this.pageSize,
+                    "query":channelName || ""
+                };
+                this.$get(this.api.getChannelList, param).then((res) =>{
+                    this.channelNumberTableData = [];
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                        this.channelNumberTableData = res.data.records;
+                        this.totalPage = res.data.total;
+                    }
+                }).catch((err) => {
+                    this.$Message.error('请求失败');
+                });
             },
-            delete(){
-              this.deleteChannelModel = true;
+            validateCreateChannel(){
+                if(this.createChannelParam.channelName == ""){
+                        this.showError = 1;
+                        this.error.createChannelError = "渠道名称不能为空！";
+                } else if(this.createChannelParam.channelName.length > 100){
+                        this.showError = 1;
+                        this.error.createChannelError = "请输入1-100个渠道名称字符！";
+                } else  if(this.createChannelParam.remarks.length > 500){
+                        this.showError = 1;
+                        this.error.createChannelError = "请输入1-500个备注字符！";
+                } else {
+                    this.showError = 0;
+                }
+                if(!this.showError){
+                    this.loading = false;
+                } else {
+                    this.loading = true;
+                }
             },
-            getChannelNumberList(){
-                this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
+            /*修改渠道*/
+            update(channelID){
+                var param  = {
+                    channelID:channelID
+                }
+                this.$get(`${this.$url}unified_account/getApp`, param).then((res) => {
                     console.log(res)
-                    let channelNumberList = [
-                        {
-                            "creator":"doggy.wang (王二狗)",
-                            "createTime":"2018-11-11 09:08",
-                            "id":2,
-                            "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                            "name":"华为vfvfv",
-                            "channelID":"HW0S0N84001",
-                            "remarks":"vffvfvf",
-                            "channelNumberNum":"1222",
-                            "subordinateChannel":"华为"
-                        },
-                        {
-                            "creator":"doggy.wang (王二狗)",
-                            "createTime":"2018-11-11 09:08",
-                            "id":2,
-                            "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                            "name":"华为vfvfv",
-                            "channelID":"HW0S0N84001",
-                            "remarks":"vffvfvfdd111",
-                            "channelNumberNum":"1222",
-                            "subordinateChannel":"中兴"
-                        },
-                        {
-                            "creator":"doggy.wang (王二狗)",
-                            "createTime":"2018-11-11 09:08",
-                            "id":2,
-                            "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                            "name":"华为vfvfv2222",
-                            "channelID":"HW0S0N84001",
-                            "remarks":"vffvfvfdd111",
-                            "channelNumberNum":"1222",
-                            "subordinateChannel":"三星"
-                        },
-                        {
-                            "creator":"doggy.wang (王二狗)",
-                            "createTime":"2018-11-11 09:08",
-                            "id":2,
-                            "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                            "name":"华为vfvfvvfvfv222",
-                            "channelID":"HW0S0N84001",
-                            "remarks":"vffvfvfdd111",
-                            "channelNumberNum":"1222",
-                            "subordinateChannel":"三星222"
-                        },
-                        {
-                            "creator":"doggy.wang (王二狗222)",
-                            "createTime":"2018-11-11 09:08",
-                            "id":2,
-                            "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                            "name":"华为vfvfv2vgbg",
-                            "channelID":"HW0S0N84001",
-                            "remarks":"vffvfvfdd111333",
-                            "channelNumberNum":"1222",
-                            "subordinateChannel":"三星3444"
-                        }
-                    ];
-                    this.channelNumberTableData = channelNumberList;
-                    this.currentApp = "梦幻家园";
-                    this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
-                    this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
+                    this.belongChannels = [
+                        {"channelName":"cdfvf11222211"},
+                        {"channelName":"22223vgg222222222222222"}
+                    ]
                 }).catch((err) => {
                     this.$Message.error('This is an error tip');
                 });
+                this.updateChannelModel = true;
             },
-            create(){
-               /* this.$router.push({
-                    name: "appCreate"
-                });*/
+            /*删除渠道*/
+            delete(channelID){
+                var param  = {
+                    channelID:channelID
+                }
+                this.$get(`${this.$url}unified_account/getApp`, param).then((res) => {
+                    console.log(res)
+                    this.belongChannels = [
+                        {"channelName":"cdfvf11222211"},
+                        {"channelName":"22223vgg222222222222222"}
+                    ]
+                }).catch((err) => {
+                    this.$Message.error('This is an error tip');
+                });
+                this.deleteChannelModel = true;
             },
+            /*取消修改渠道*/
+            updateChannelModelCancel(){
+                this.currentSelectBelongChannel = "";
+                this.updateChannelModel = false;
+            },
+            /*确定修改渠道*/
+            updateChannelModelOk(){
+                if(this.currentSelectBelongChannel == ""){
+                    this.showError = 1;
+                    this.error.updateChannelError = "请选择渠道！";
+                }
+                if(!this.showError){
+                    this.$post(`${this.$url}unified_account/getApp`, param).then((res) => {
+                        console.log(res)
+                        this.updateChannelModel = false;
+                        this.$Message.success('修改渠道成功！');
+                    }).catch((err) => {
+                        this.$Message.error('This is an error tip');
+                    });
+                }
+            },
+            /*取消删除渠道*/
+            deleteChannelModelCancel(){
+                this.deleteChannelModel = false;
+            },
+            /*确定删除渠道*/
+            deleteChannelModelOk(){
+                if(this.currentSelectBelongChannel == ""){
+                    this.showError = 1;
+                    this.error.deleteChannelError = "请选择渠道！";
+                }
+                if(!this.showError){
+                    this.$post(`${this.$url}unified_account/getApp`, param).then((res) => {
+                        console.log(res)
+                        this.deleteChannelModel = false;
+                        this.$Message.success('修改渠道成功！');
+                    }).catch((err) => {
+                        this.$Message.error('This is an error tip');
+                    });
+                }
+            },
+            /*取消创建渠道*/
+            createChannelModelCancel(){
+                this.showError = false;
+                this.createChannelModel = false;
+            },
+            /*确定创建渠道*/
+            createChannelModelOk(){
+                this.validateCreateChannel("");
+                if(!this.showError){
+                    this.createChannelModel = false;
+                    var param = {
+                        channelName:this.createChannelParam.channelName,
+                        remarks:this.createChannelParam.remarks
+                    };
+                    this.$post(`${this.$url}unified_account/getApp`, param).then((res) => {
+                        console.log(res)
+                        this.$Message.success('创建渠道成功！');
+                    }).catch((err) => {
+                        this.$Message.error('This is an error tip');
+                    });
+                }
+            },
+            /*分页切换*/
             handleCurrentChange(val) {
                 this.curPage = val;
                 this.getChannelNumberList();
-            },
+            }
         }
     };
 </script>

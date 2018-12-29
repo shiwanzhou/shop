@@ -6,52 +6,79 @@
     <div class="appInfo appManagement">
        <div class="title">应用信息</div>
         <!--应用信息详情-->
-        <Form :model="form" label-position="left" :label-width="100">
+        <Form :model="form" class="form" label-position="left" :label-width="100">
             <div class="appkey_info">
-                <div class="item">
-                    <FormItem label="App Key：">
-                        <Input v-model="form.appKey"  ></Input>
-                    </FormItem>
-                    <FormItem label="App ID：">
-                        <Input v-model="form.appID"  ></Input>
-                        <div class="detail_desc">原Game ID，仅用于系统内部识别唯一业务的标识。</div>
-                    </FormItem>
+                <div class="left">
+                    <div class="item item_right_text">
+                        <span class="text channel_name_text">App Key：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 360px;" v-model="form.appKey"></Input>
+                            <span class="blue" @click="copy(form.appKey)">复制</span>
+                        </div>
+                    </div>
+                    <div class="item item_right_text">
+                        <span class="text channel_name_text">App Secret：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 360px;" v-model="form.appSecret"></Input>
+                            <span class="blue"  @click="copy(form.appSecret)">复制</span>
+                        </div>
+                    </div>
+                    <div class="btn">
+                        <Button @click="read">阅读指南</Button>
+                        <Button @click="download">下载SDK</Button>
+                        <div class="desc_text" style="margin-top: 10px;">提示：请先阅读指南，诊断自身业务所需的服务。</div>
+                    </div>
                 </div>
-                <div class="item">
-                    <FormItem label="App Secret：">
-                        <Input v-model="form.appSecret" ></Input>
-                    </FormItem>
-                </div>
-                <div class="btn">
-                    <Button @click="read">阅读指南</Button>
-                    <Button @click="download">下载SDK</Button>
+                <div class="right">
+                    <div class="item">
+                        <span class="text channel_name_text">App ID：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 360px;" value="dv2222fvfv"></Input>
+                        </div>
+                    </div>
+                    <div class="item">
+                        <span class="text">创建时间：</span>
+                        <div class="right">
+                            yy-mm-dd HH:MM
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="border"></div>
-            <div class="appInfo_detail">
-               <div class="left_span">
-                   <div class="app_name">
-                       <span class="text">应用名称：</span>
+            <div class="appkey_info">
+               <div class="left">
+                   <div class="item">
+                       <span class="text channel_name_text">应用名称：</span>
                        <div class="right">
-                           <Input type="text" ></Input>
+                           <Input type="text" style="width: 360px;" value="绝地战机" ></Input>
                            <div class="desc_text">1-100个字符。</div>
                        </div>
                    </div>
-                   <div class="system_platform">
+                   <div class="item system_platform">
                        <span class="text">系统平台：</span>
                        <div class="right">
                            <div class="checkbox">
                                <CheckboxGroup v-model="form.systemPlatform" >
                                    <Checkbox label="iOS" size="large"></Checkbox>
                                    <Checkbox label="Android" size="large"></Checkbox>
-                                   <Checkbox label="HTML5" size="large"></Checkbox>
                                    <Checkbox label="小程序" size="large"></Checkbox>
+                                   <Checkbox label="网页" size="large"></Checkbox>
+                                   <Checkbox label="桌面客户端" size="large"></Checkbox>
                                </CheckboxGroup>
                            </div>
                            <div class="desc_text">当你的业务需要跨平台使用用户数据时请多选。</div>
                        </div>
                    </div>
-                   <div class="icon">
+                   <div class="item remarks">
+                       <span class="text">备注<em>（可选）</em>：</span>
+                       <div class="right">
+                           <Input v-model="form.remarks"  style="width: 360px" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
+                           <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>
+                       </div>
+                   </div>
+               </div>
+               <div class="right">
+                   <div class="item icon">
                        <span class="text">图标：</span>
                        <div class="right">
                            <Upload
@@ -75,15 +102,6 @@
                        </div>
                    </div>
                </div>
-               <div class="right_span">
-                   <div class="remarks">
-                       <span class="text">备注<em>（可选）</em>：</span>
-                       <div class="right">
-                           <Input v-model="form.remarks"   type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="Enter something..."></Input>
-                           <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>
-                       </div>
-                   </div>
-               </div>
             </div>
             <Button type="primary" class="update" size="large" @click="update">更新</Button>
         </Form>
@@ -91,6 +109,20 @@
 </template>
 
 <script>
+    function getElementByClassName(classnames){
+        var objArray= new Array();//定义返回对象数组
+        var tags=document.getElementsByTagName("*");//获取页面所有元素
+        var index = 0;
+        for(var i in tags){
+            if(tags[i].nodeType==1){
+                if(tags[i].getAttribute("class") == classnames){ //如果某元素的class值为所需要
+                    objArray[index]=tags[i];
+                    index++;
+                }
+            }
+        }
+        return objArray;
+    }
     export default {
         name: 'appInfo',
         data () {
@@ -98,10 +130,11 @@
                 form:{
                     systemPlatform:[],
                     remarks:"",
-                    appKey:"",
-                    appSecret:"",
+                    appKey:"appkeyappkeyappkeyappkey",
+                    appSecret:"App SecretApp SecretApp Secret",
                     appID:""
-                }
+                },
+                copyStatus:0
             };
         },
         computed: {
@@ -150,8 +183,19 @@
             handleBeforeUpload () {
 
             },
+            copyStr(str){
+                let $this = this;
+                document.addEventListener('copy',function (e) {
+                    e.clipboardData.setData('text/plain',str);
+                    e.preventDefault();//阻止默认行为
+                    e.stopPropagation();
+                });
+                document.execCommand("copy");//使文档处于可编辑状态，否则无效
+            },
+            copy(value){
+                this.copyStr(value);
+            },
             update(){
-                console.log(999)
                 this.$router.push({
                     name: "appCreate"
                 });

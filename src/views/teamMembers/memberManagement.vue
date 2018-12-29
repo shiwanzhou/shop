@@ -14,8 +14,8 @@
             <div class="search">
                 <div class="select">
                     <Radio-group v-model="tab" type="button">
-                        <Radio  label="all">全部</Radio>
-                        <Radio  label="large">角色一</Radio>
+                        <Radio label="all">全部</Radio>
+                        <Radio label="large">角色一</Radio>
                         <Radio label="default">角色二</Radio>
                         <Radio label="default2">角色三</Radio>
                     </Radio-group>

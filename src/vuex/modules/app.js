@@ -132,7 +132,7 @@ const app = {
                 param.appRouter = appRouter;
                 param.serviceInfo = serviceInfo;
                 if(location.hash.indexOf("issueChannel") !== -1){
-                    console.log(7788)
+                  //  console.log(7788)
                     context.commit("updateChannelManagementMenulist",param);
                 } else {
                     console.log(7788111111111111)

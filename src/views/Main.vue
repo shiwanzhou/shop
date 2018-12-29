@@ -141,7 +141,7 @@
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷3"},
                     {"id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷4"}
                 ];
-                console.log(appList)
+              //  console.log(appList)
                 this.appList = appList;
                 this.currentApp = "梦幻家园";
                 this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
@@ -183,7 +183,10 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
-                    const title = '你有未提交的修改内容';
+                    this.$router.push({
+                        name: 'accountCenter'
+                    });
+                   /* const title = '你有未提交的修改内容';
                     const content = '<p>注意：一旦离开，未提交的修改内容将会丢失。</p>';
                     this.$Modal.confirm({
                          title: title,
@@ -194,7 +197,7 @@
                          },
                          onCancel: () => {
                         }
-                    });
+                    });*/
                 } else if (name === 'loginout') {
                     // 退出登录
                     this.$store.dispatch('logout', this);

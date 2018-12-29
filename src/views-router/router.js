@@ -10,6 +10,16 @@ export const loginRouter = {
     component: resolve => require(['../views/user/login.vue'], resolve)
   };
 
+
+export const accountCenterRouter = {
+    path: '/accountCenter',
+    name: 'accountCenter',
+    meta: {
+        title: 'accountCenter - 帐号中心'
+    },
+    component: resolve => require(['../views/user/accountCenter.vue'], resolve)
+};
+
 export const appCreateRouter = {
     path: '/appCreate',
     name: 'appCreate',
@@ -55,8 +65,8 @@ export const page404 = {
 export const otherRouter = {
     path: '/',
     name: 'otherRouter',
-    redirect: '/home',
-    component: resolve => require(['../views/table/searchable-table.vue'], resolve)
+    redirect: '/myApp',
+    component: resolve => require(['../views/myApp/myApp.vue'], resolve)
 };
 
 
@@ -188,8 +198,11 @@ export const appRouter = [
 // 所有上面定义的路由都要写在下面的routers里
 export const routers = [
     loginRouter,
+    accountCenterRouter,
     appCreateRouter,
     appCreateSucRouter,
     myAppRouter,
+    otherRouter,
     ...appRouter,
+    page404,
 ];

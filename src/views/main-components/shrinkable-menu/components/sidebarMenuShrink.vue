@@ -46,7 +46,7 @@ export default {
             this.$emit('on-change', active);
         },
         itemTitle (item) {
-            console.log(item.title)
+            //console.log(item.title)
             if (typeof item.title === 'object') {
                 return this.$t(item.title.i18n);
             } else {

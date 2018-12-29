@@ -101,14 +101,8 @@ em{font-style:normal;color: #909399;}
 .form .item.select_item .right .desc_text{
     width: 87%;
 }
-.form .item_right_text .right {display: flex}
-.form .item_right_text .right .ivu-input-wrapper{
-    width: 95%;
-}
-.form .item_right_text .right .blue{
-    width: 50px;
-    margin-top: 7px;
-}
+
+
 /*应用信息*/
 .appInfo {
     margin-top: 20px;
@@ -174,15 +168,12 @@ em{font-style:normal;color: #909399;}
     margin-top: 25px;
     padding-left: 30px;
     padding-right: 30px;
-    display: flex;
 }
-.appManagement .appkey_info .left{width: 50%;}
-.appManagement .appkey_info .right{width: 50%;}
 .appManagement .appkey_info .item{
     display: flex;
 }
-.appManagement .appkey_info .right .item .ivu-input-wrapper{}
-.appManagement .appkey_info .right .item .ivu-input-wrapper{}
+.appManagement .appkey_info .item .ivu-form-item{width: 50%;}
+.appManagement .appkey_info .item  .ivu-form-item  .ivu-form-item-label{text-align: right}
 .appManagement .border{}
 .appManagement .appkey_info .btn{
     margin-bottom: 25px;
@@ -191,30 +182,41 @@ em{font-style:normal;color: #909399;}
 .appManagement .appkey_info .btn button{
     margin-right: 20px;
 }
-
-.appManagement .appkey_info .system_platform .right .checkbox label{margin-right: 20px;margin-bottom: 10px;}
+.appManagement .appInfo_detail{
+    display: flex;
+    margin-left: 30px;
+    padding-right: 30px;
+    width: 97%;
+    margin-top: 30px;
+}
+.appManagement .appInfo_detail .left_span{width: 50%;}
+.appManagement .appInfo_detail .right_span{ width: 50%;}
+.appManagement .appInfo_detail .system_platform .right .checkbox label{margin-right: 20px;margin-bottom: 10px;}
 .appManagement .update{
     margin-left: 30px;
     margin-top: 10px;
 }
-.appManagement .ivu-input{width: 95%;}
-.appManagement .appkey_info .app_name .right .ivu-input{width: 70%}
-.appManagement .appkey_info .app_name .right{width: 75%;}
-.appManagement .appkey_info .remarks{}
-.appManagement .appkey_info .remarks .text{
+.appManagement .ivu-input{width: 65%;}
+.appManagement .appInfo_detail .text{
+    text-align: right;
+    width: 100px;
+}
+.appManagement .appInfo_detail .app_name .text{
+    /* width: 81px; */
+}
+.appManagement .appInfo_detail .app_name .right .ivu-input{width: 70%}
+.appManagement .appInfo_detail .app_name .right{width: 75%;}
+.appManagement .appInfo_detail .remarks{}
+.appManagement .appInfo_detail .remarks .text{
     width: 100px;
     text-align: left;
 }
-.appManagement .appkey_info .remarks textarea{
-    width: 90%;
+.appManagement .appInfo_detail .remarks textarea{
+    width: 100%;
 }
 .appManagement .create_time{
     margin-left: 20px;
 }
-.appManagement .appkey_info .item .text{
-    width: 100px;
-}
-.appManagement .appkey_info .blue{cursor: pointer;}
 /*应用创建*/
 .appCreate .appInfo{
     margin-top: 60px;

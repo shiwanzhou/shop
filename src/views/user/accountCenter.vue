@@ -66,101 +66,59 @@
             </div>
         </div>
         <!--我的应用-->
-        <div class="myApp">
-             <div class="left">
-                 <div class="title">我的应用</div>
-                 <div class="search">
-                     <div class="system_platform">
-                         <span class="text">系统平台：</span>
-                         <Select v-model="model1"  class="select" style="width:200px">
-                             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                         </Select>
-                     </div>
-                     <div class="input">
-                         <Input v-model="value4" icon="ios-search" placeholder="应用名称/备注信息" style="width: 300px"></Input>
-                     </div>
-                 </div>
-                 <div class="btn">
-                     <div class="left_btn">
-                         <Radio-group v-model="tab" type="button">
-                             <Radio label="large">最近访问</Radio>
-                             <Radio label="default">我创建的</Radio>
-                             <Radio label="default2">最新创建</Radio>
-                         </Radio-group>
-                     </div>
-                     <div class="right_btn">
-                         <span @click="changeAppList(1)" :class="{blue:1 == changeAppIndex}" >
-                             <Icon class="change_card"   type="ios-keypad-outline"></Icon>
-                         </span>
-                         <span @click="changeAppList(2)"  :class="{blue:2 == changeAppIndex}" >
-                             <Icon class="change_table"  type="ios-settings"></Icon>
-                         </span>
-                         <Button type="primary" @click="create">创建</Button>
-                     </div>
-                 </div>
-                 <!--应用卡片列表-->
-                 <div class="appCard_list">
-                     <div  v-show="showAppCardList" class="card">
-                         <Card class="item" v-for="(item,index) in appList" style="width: 250px;">
-                             <div class="img">
-                                 <img :src="item.img">
-                             </div>
-                             <div class="title">{{item.name}}</div>
-                             <div class="text">
-                                 {{item.text}}
-                             </div>
-                             <div class="tag">
-                                 <Button disabled size="small" v-show="item.tag == 'iOS' || item.tag == 'iOS,Android'">
-                                     iOS
-                                 </Button>
-                                 <Button disabled size="small"  v-show="item.tag == 'Android' || item.tag == 'iOS,Android'">
-                                     Android
-                                 </Button>
-                             </div>
-                         </Card>
-                         <div class="clear"></div>
-                         <div class="page">
-                             <Page :total="totalPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
-                         </div>
-                     </div>
-                     <div v-show="!showAppCardList"  class="table">
-                         <Table :columns="appTableColumns" :data="appTableData"></Table>
-                         <div class="clear"></div>
-                         <div class="page">
-                             <Page :total="totalPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
-                         </div>
-                     </div>
-                 </div>
-             </div>
-             <div class="right">
-                 <div class="title">平台服务产品</div>
-                 <Card class="card"style="width: 220px;cursor: pointer">
-                     <a class="item" :href="channelManagementHref" target="_blank">
-                         <Icon class="icon" type="disc"></Icon>
-                         <div class="item_text">
-                             <div class="small_title">
-                                 渠道管理
-                             </div>
-                             <div class="text">
-                                 这是一个平台服务注释，你可以先看看。
-                             </div>
-                         </div>
-                     </a>
-                 </Card>
-                 <Card class="card" style="width: 220px;">
-                     <a class="item" href="http://dc.idreamsky.com/" target="_blank">
-                         <Icon class="icon" type="disc"></Icon>
-                         <div class="item_text">
-                             <div class="small_title">
-                                 数据平台
-                             </div>
-                             <div class="text">
-                                 这是一个平台服务注释，你可以先看看。
-                             </div>
-                         </div>
-                     </a>
-                 </Card>
-             </div>
+        <div class="appInfo accountCenter">
+            <div class="title">帐号中心</div>
+            <div class="desc">更新修改个人帐号信息请联系请联系业务负责人或 <a class="blue" href="">example@email.com</a>。</div>
+            <div class="border"></div>
+            <div class="content form">
+                <div class="item">
+                    <span class="text">姓名：</span>
+                    <div class="right">
+                        <Input type="text" disabled style="width: 330px;" value="jasen"></Input>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="text">帐号类型：</span>
+                    <div class="right">
+                        <Input type="text" disabled style="width: 330px;" value="企业微信"></Input>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="text">创建时间：</span>
+                    <div class="right">
+                        <span class="desc">yy-mm-dd HH:MM</span>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="text">公司：</span>
+                    <div class="right">
+                        <Input type="text" disabled style="width: 330px;" value="创梦天地"></Input>
+                    </div>
+                </div>
+                <div class="item item_table_app" style="display: none">
+                    <span class="text">应用访问：</span>
+                    <div class="right">
+                        <Table :columns="appTableColumns" :data="appTableData"></Table>
+                    </div>
+                </div>
+                <div class="item item_table_app  item_table_platform" style="display: none">
+                    <span class="text">平台服务访问：</span>
+                    <div class="right">
+                        <Table :columns="platformTableColumns" :data="platformTableData"></Table>
+                    </div>
+                </div>
+                <div class="item">
+                    <span class="text">近期登陆：</span>
+                    <div class="right">
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -189,6 +147,7 @@
                 totalPage:20,
                 pageSize:this.$pageSize,
                 showAppCardList:false,
+                appTableData:[],
                 appTableColumns: [
                     {
                         title: '应用名称',
@@ -196,7 +155,7 @@
                         render: (h, params) => {
                             return h('div',{
                                 style: {
-                                   display:"flex"
+                                    display:"flex"
                                 },
                             }, [
                                 h('img', {
@@ -209,34 +168,34 @@
                                     }
                                 }),
                                 h('div',{},
-                                   [
-                                    h('div',{
-                                        style: {
-                                           marginTop:"15px",
-                                           marginBottom:"5px",
-                                           fontWeight:'bold',
-                                           fontSize:'16px'
-                                        },
-                                        domProps: {
-                                            innerHTML: params.row.name
-                                        },
-                                    }),
-                                    h('div', {
-                                        style: {
-                                            color: '#909399',
-                                            marginBottom:"15px",
-                                        },
-                                        domProps: {
-                                            innerHTML: params.row.text
-                                        }
-                                    })
-                                ])
+                                    [
+                                        h('div',{
+                                            style: {
+                                                marginTop:"15px",
+                                                marginBottom:"5px",
+                                                fontWeight:'bold',
+                                                fontSize:'12px'
+                                            },
+                                            domProps: {
+                                                innerHTML: params.row.name
+                                            },
+                                        }),
+                                        h('div', {
+                                            style: {
+                                                color: '#909399',
+                                                marginBottom:"15px",
+                                            },
+                                            domProps: {
+                                                innerHTML: params.row.text
+                                            }
+                                        })
+                                    ])
                             ]);
                         }
                     },
                     {
                         title: '平台',
-                        key: 'tag',
+                        key: 'platform',
                         render: (h, params) => {
                             return h('div',{
                                 style: {
@@ -253,7 +212,7 @@
                                     },
                                     style: {
                                         marginRight:"10px",
-                                        display:(params.row.tag == 'iOS' ||  params.row.tag == 'iOS,Android')?"inline-block":"none",
+                                        display:(params.row.platform == 'iOS' ||  params.row.platform == 'iOS,Android')?"inline-block":"none",
                                     }
                                 }),
                                 h('Button', {
@@ -266,23 +225,101 @@
                                     },
                                     style: {
                                         marginRight:"10px",
-                                        display:(params.row.tag == 'Android' ||  params.row.tag == 'iOS,Android')?"inline-block":"none"
+                                        display:(params.row.platform == 'Android' ||  params.row.platform == 'iOS,Android')?"inline-block":"none"
                                     }
                                 })
                             ]);
                         }
                     },
                     {
-                        title: '创建者',
-                        key: 'creator'
+                        title: '角色',
+                        key: 'role',
+                        render: (h, params) => {
+                            return h('div',{
+                                style: {
+                                    fontSize:'12px'
+                                },
+                                domProps: {
+                                    innerHTML: params.row.role
+                                }
+                            });
+                        }
+                    },
+                ],
+                platformTableData:[],
+                platformTableColumns: [
+                    {
+                        title: '平台服务',
+                        key: 'name',
+                        render: (h, params) => {
+                            return h('div',{
+                                style: {
+                                    display:"flex"
+                                },
+                            }, [
+                                h('img', {
+                                    attrs: {
+                                        src: params.row.img
+                                    },
+                                    style: {
+                                        width: '40px',
+                                        marginRight:"10px"
+                                    }
+                                }),
+                                h('div',{},
+                                    [
+                                        h('div',{
+                                            style: {
+                                                marginTop:"15px",
+                                                marginBottom:"5px",
+                                                fontWeight:'bold',
+                                                fontSize:'12px'
+                                            },
+                                            domProps: {
+                                                innerHTML: params.row.name
+                                            },
+                                        }),
+                                        h('div', {
+                                            style: {
+                                                color: '#909399',
+                                                marginBottom:"15px",
+                                            },
+                                            domProps: {
+                                                innerHTML: params.row.text
+                                            }
+                                        })
+                                    ])
+                            ]);
+                        }
                     },
                     {
-                        title: '创建时间',
-                        key: 'createTime'
-                    }
-                ],
-                data1: [
-
+                        title: '类型',
+                        key: 'type',
+                        render: (h, params) => {
+                            return h('div',{
+                                style: {
+                                    fontSize:'12px'
+                                },
+                                domProps: {
+                                    innerHTML: params.row.type
+                                }
+                            });
+                        }
+                    },
+                    {
+                        title: '角色',
+                        key: 'role',
+                        render: (h, params) => {
+                            return h('div',{
+                                style: {
+                                    fontSize:'12px'
+                                },
+                                domProps: {
+                                    innerHTML: params.row.role
+                                }
+                            });
+                        }
+                    },
                 ]
             };
         },
@@ -316,17 +353,20 @@
                 this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                     console.log(res)
                     let appList = [
-                        {"creator":"Fuller","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"iOS"},
-                        {"creator":"Fuller","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"iOS"},
-                        {"creator":"Fuller","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷2","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"Android"},
-                        {"creator":"Fuller3","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷3","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"Android"},
-                        {"creator":"Fuller2","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷4","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"iOS,Android"}
+                        {"text":"这是一个演示控制台能力的DEMO，你可以先看看。","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡","role":"角色一","platform":"iOS"},
+                        {"text":"这是一个演示控制台能力的DEMO，你可以先看看。","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷","role":"角色一、角色二","platform":"iOS"},
+                        {"text":"这是一个演示控制台能力的DEMO，你可以先看看。","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷2","role":"角色一、角色二","platform":"Android"},
+                    ];
+                    let platformList = [
+                        {"text":"游戏发行与投放的用户来源标识...","type":"微服务","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"渠道管理","role":"角色一","platform":"iOS"},
+                        {"text":"DATAX 数据相关报表，提取，查询等...","type":"微服务","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"大数据平台","role":"角色一、角色二","platform":"iOS"},
                     ];
                     this.appList = appList;
                     this.currentApp = "梦幻家园";
                     this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
                     this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
                     this.appTableData = appList;
+                    this.platformTableData = platformList;
                 }).catch((err) => {
                     this.$Message.error('This is an error tip');
                 });
@@ -356,9 +396,6 @@
             },
             handleClickUserDropdown (name) {
                 if (name === 'ownSpace') {
-                    this.$router.push({
-                        name: 'accountCenter'
-                    });
                 } else if (name === 'loginout') {
                     // 退出登录
                     this.$store.dispatch('logout', this);
