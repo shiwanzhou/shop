@@ -250,6 +250,8 @@ em{font-style:normal;color: #909399;}
     color: #bbbec4;
     text-align: left;
 }
+.appCreate_suc  .form .item .text{width: 100px;}
+.appCreate_suc .form .item_right_text .right .blue{cursor: pointer}
 .appCreate_suc .btn{
     margin-top: 80px;
 }

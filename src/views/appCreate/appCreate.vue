@@ -137,7 +137,7 @@
     Vue.use(VueI18n);
 
     export default {
-        name: 'appInfo',
+        name: 'appCreate',
         data () {
             return {
                 api:{
@@ -215,6 +215,8 @@
                 } else if(!this.form.systemPlatform.length){
                     this.showError = 1;
                     this.error = "请选择系统平台！";
+                } else {
+                    this.showError = 0;
                 }
                 var param  = {
                     name:this.form.name,
@@ -222,6 +224,9 @@
                     remarks: this.form.remarks,
                     uploadImgUrl:this.form.uploadImgUrl
                 }
+                this.$router.push({
+                    name: 'appCreateSuc'
+                })
                 if(!this.showError){
                     console.log(param)
                     this.$post(this.api.createChannel, param).then((res) =>{

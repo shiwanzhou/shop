@@ -74,17 +74,27 @@
                 <Icon class="icon" type="checkmark-circled"></Icon>
                 <div class="title_text">创建成功</div>
                 <div class="desc">立即阅读指南，了解技术中台所提供的服务。</div>
-                <Form :model="appCreateSucInfo" class="info" :label-width="100" >
-                    <FormItem label="App Key：">
-                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
-                    </FormItem>
-                    <FormItem label="App Secret：">
-                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
-                    </FormItem>
-                    <FormItem label="Game ID：">
-                        <Input v-model="appCreateSucInfo.key" disabled ></Input>
-                        <div class="detail_desc" style="display:none">原Game ID，仅用于系统内部识别唯一业务的标识。</div>
-                    </FormItem>
+                <Form :model="appCreateSucInfo" class="info form" :label-width="100" >
+                    <div class="item item_right_text">
+                        <span class="text channel_name_text">App Key：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 450px;" v-model="appCreateSucInfo.appKey"></Input>
+                            <span class="blue" @click="copy(appCreateSucInfo.appKey)">复制</span>
+                        </div>
+                    </div>
+                    <div class="item item_right_text">
+                        <span class="text channel_name_text">App Secret：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 450px;" v-model="appCreateSucInfo.appSecret"></Input>
+                            <span class="blue"  @click="copy(appCreateSucInfo.appSecret)">复制</span>
+                        </div>
+                    </div>
+                    <div class="item item_right_text">
+                        <span class="text channel_name_text">Game ID：</span>
+                        <div class="right">
+                            <Input type="text" disabled style="width: 450px;" v-model="appCreateSucInfo.gameId"></Input>
+                        </div>
+                    </div>
                 </Form>
                 <div class="btn">
                     <Button >阅读指南</Button>
@@ -100,7 +110,7 @@
     Vue.use(VueI18n);
 
     export default {
-        name: 'appInfo',
+        name: 'appCreateSuccess',
         data () {
             return {
                 currentApp: "",
@@ -113,8 +123,9 @@
                 userName: '',
                 tabIndex: 0,
                 appCreateSucInfo:{
-                    key:"cdcfvfv"
-
+                    appKey:"cdcfvfv111",
+                    appSecret:"vfvgbggggg",
+                    gameId:"113"
                 }
             };
         },
@@ -150,6 +161,18 @@
             });
         },
         methods: {
+            copyStr(str){
+                let $this = this;
+                document.addEventListener('copy',function (e) {
+                    e.clipboardData.setData('text/plain',str);
+                    e.preventDefault();//阻止默认行为
+                    e.stopPropagation();
+                });
+                document.execCommand("copy");//使文档处于可编辑状态，否则无效
+            },
+            copy(value){
+                this.copyStr(value);
+            },
             start(){
                 if(this.$store.state.app.serviceList[1].iconType == "ios-box"){
                     location.href = this.$url+"#publicConfig/appInfo";

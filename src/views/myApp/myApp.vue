@@ -82,7 +82,7 @@
                  </div>
                  <div class="btn">
                      <div class="left_btn">
-                         <Radio-group v-model="searchOption.tab" type="button">
+                         <Radio-group v-model="searchOption.tab" @on-change="changeTab" type="button">
                              <Radio label="recentVisit">最近访问</Radio>
                              <Radio label="oneselfCreate">我创建的</Radio>
                              <Radio label="latestCreate">最新创建</Radio>
@@ -170,7 +170,7 @@
     Vue.use(VueI18n);
 
     export default {
-        name: 'appInfo',
+        name: 'myApp',
         data () {
             return {
                 api:{
@@ -180,10 +180,7 @@
                 searchOption:{
                     appName:"",
                     tab:"recentVisit",
-                    systemPlatformList:[
-                        {"id":"IOSid","name":"IOS"},
-                        {"id":"Androidid","name":"Android"}
-                    ],
+                    systemPlatformList:[],
                     currentSystemPlatformName:"",
                     currentSystemPlatformId:""
                 },
@@ -312,7 +309,7 @@
         created(){
         },
         mounted(){
-            this.getAppList();
+            this.getSystemPlatformList();
         },
         methods: {
             create(){
@@ -333,6 +330,28 @@
             /*搜索渠道号列表*/
             search(){
                 this.getAppList(1);
+            },
+            /*获取系统平台列表*/
+            getSystemPlatformList(){
+                this.$get(this.api.getAppList, {}).then((res) => {
+                    this.searchOption.systemPlatformList = [
+                        {"id":"IOSid","name":"IOS"},
+                        {"id":"Androidid","name":"Android"},
+                        {"id":"网页id","name":"网页"}
+                    ];
+                    this.getAppList();
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                        this.searchOption.systemPlatformList = [
+                            {"id":"IOSid","name":"IOS"},
+                            {"id":"Androidid","name":"Android"}
+                        ];
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
+                }).catch((err) => {
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
             },
             getAppList(searchStatus){
                 if(searchStatus){
@@ -375,6 +394,11 @@
             changeSystemPlatform(val){
                 console.log(val)
                 this.searchOption.currentSystemPlatformId = val;
+            },
+            changeTab(val){
+              console.log(val)
+              this.searchOption.tab = val;
+              this.getAppList(1);
             },
             changeApp(){
                 this.showAppList = !this.showAppList
