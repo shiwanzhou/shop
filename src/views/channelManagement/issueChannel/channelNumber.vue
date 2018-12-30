@@ -20,14 +20,14 @@
         <div class="option">
             <div class="search">
                 <div class="left">
-                    <Radio-group v-model="tableSize" type="button">
-                        <Radio label="large">使用中</Radio>
-                        <Radio label="default">已停用</Radio>
+                    <Radio-group v-model="searchOption.tab" type="button">
+                        <Radio label="useing">使用中</Radio>
+                        <Radio label="stoped">已停用</Radio>
                     </Radio-group>
                     <div class="subordinateChannel">
                        <span>所属渠道：</span>
-                        <Select  style="width:200px;margin-right: 20px;">
-                            <Option>fvf</Option>
+                        <Select placeholder="请选择渠道" @on-change="changeBelongChannel"  v-model="curSelectBelongChannel" slot="prepend" style="width: 320px">
+                            <Option v-for="item in belongChannels" :value="item.channelID"  >{{item.channelName}}</Option>
                         </Select>
                     </div>
                 </div>
@@ -135,7 +135,7 @@
             </Modal>
             <div class="clear"></div>
             <div class="page">
-                <Page :total="totalPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
+                <Page :total="totalPage" :current="curPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
             </div>
         </div>
     </div>
@@ -143,56 +143,60 @@
 
 <script>
     export default {
-        name: 'appInfo',
+        name: 'channelNumber',
         data () {
             return{
+                api:{
+                    "getChannelList":this.$url+"channel/getAllChannel", //获取渠道列表
+                    "createChannel":this.$url+"channel/createChannel",  //创建渠道
+                    "updateChannel":this.$url+"channel/updateChannel",   //修改渠道
+                    "deleteChannel":this.$url+"channel/deleteChannel"   //删除渠道
+                },
                 createChannelModel:false,
                 updateChannelModel:false,
                 stopChannelModel:false,
                 batchImportModel:false,
                 showError:false,
                 loading: true,
-                tableSize: 'large',
+                curSelectBelongChannel:"",
+                belongChannels:[],
                 searchOption:{
+                    tab: 'useing',
                     channelNumberName:"",
-                    subordinateChannel:[]
+                    curSelectBelongChannelId:""
                 },
                 channelNumberTableData:[],
                 channelNumberTableColumns: [
                     {
-                        type: 'selection',
-                        width: 60,
-                        align: 'center'
-                    },
-                    {
                         title: '渠道号名称 ',
-                        key: 'name'
+                        key: 'belongChannelName'
                     },
                     {
-                        title: '渠道号',
-                        key: 'channelNumber',
+                        title: '渠道ID',
+                        key: 'id',
                     },
                     {
                         title: '备注',
-                        key: 'remarks'
+                        key: 'remark',
                     },
                     {
-                        title: '所属渠道',
-                        key: 'subordinateChannel'
+                        title: '渠道号数量',
+                        key: 'belongChannelNum',
                     },
                     {
                         title: '创建者',
-                        key: 'creator'
+                        key: 'username'
                     },
                     {
                         title: '创建时间',
-                        key: 'createTime',
+                        key: 'createdDate',
                         sortable: true
                     },
                     {
                         title: '操作',
                         key: 'operation',
                         render: (h, params) => {
+                            let _this = this;
                             return h('div',{
                                 style: {
                                     "display":"flex",
@@ -211,19 +215,25 @@
                                         cursor: "pointer"
                                     },
                                     on: {
-                                        click: this.update
+                                        click:function(event) {
+                                            event.preventDefault();
+                                            _this.updateModal(params.row.channelID)
+                                        }
                                     }
                                 }),
                                 h('span',{
                                     domProps: {
-                                        innerHTML:"停用"
+                                        innerHTML:"删除"
                                     },
                                     style: {
                                         color:"#2d8cf0",
                                         cursor: "pointer"
                                     },
                                     on: {
-                                        click: this.stop
+                                        click:function(event) {
+                                            event.preventDefault();
+                                            _this.deleteModal(params.row.channelID)
+                                        }
                                     }
                                 })
                             ]);
@@ -235,16 +245,64 @@
                 pageSize:this.$pageSize,
             };
         },
-        computed: {
-        },
-        created(){
-        },
         mounted(){
+            this.getBelongChannelList();
             this.getChannelNumberList();
         },
         methods: {
+            /*重置分页器*/
+            resetPage(){
+                this.curPage = 1;
+                this.totalPage = 20;
+                this.pageSize = this.$pageSize;
+            },
+            /*搜索渠道号列表*/
             search(){
-              console.log(this.searchOption.channelNumberName)
+                this.getChannelNumberList(this.searchOption.channelNumberName,1);
+            },
+            /*获取所属渠道列表*/
+            getBelongChannelList(){
+                this.belongChannels = [
+                    {"channelName":"channelName11","channelID":"channelID11"},
+                    {"channelName":"channelName22","channelID":"channelID22"}
+                ]
+                this.$get(this.api.getChannelList, {}).then((res) =>{
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
+                }).catch((err) => {
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
+            },
+            /*获取渠道号列表*/
+            getChannelNumberList(channelName,searchStatus){
+                if(searchStatus){
+                    this.resetPage()
+                }
+                var param = {
+                    "page":this.curPage,
+                    "pageSize":this.pageSize,
+                    "tab":this.searchOption.tab,
+                    "channelNumberName":this.searchOption.channelNumberName,
+                    "curSelectBelongChannelId":this.searchOption.curSelectBelongChannelId,
+                    "query":channelName || ""
+                };
+                console.log(param)
+                this.$get(this.api.getChannelList, param).then((res) =>{
+                    this.channelNumberTableData = [];
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                        this.channelNumberTableData = res.data.records;
+                        this.totalPage = res.data.total;
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
+                }).catch((err) => {
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
             },
             update(){
                 this.updateChannelModel = true;
@@ -282,69 +340,6 @@
                     }
                 });
             },
-            getChannelNumberList(){
-                    this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
-                        console.log(res)
-                        let channelNumberList = [
-                            {
-                                "creator":"doggy.wang (王二狗)",
-                                "createTime":"2018-11-11 09:08",
-                                "id":2,
-                                "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"华为vfvfv",
-                                "channelNumber":"HW0S0N84001",
-                                "remarks":"vffvfvf",
-                                "subordinateChannel":"华为"
-                            },
-                            {
-                                "creator":"doggy.wang (王二狗)",
-                                "createTime":"2018-11-11 09:08",
-                                "id":2,
-                                "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"华为vfvfv",
-                                "channelNumber":"HW0S0N84001",
-                                "remarks":"vffvfvf",
-                                "subordinateChannel":"中兴"
-                            },
-                            {
-                                "creator":"doggy.wang (王二狗)",
-                                "createTime":"2018-11-11 09:08",
-                                "id":2,
-                                "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"华为vfvfv2222",
-                                "channelNumber":"HW0S0N84001",
-                                "remarks":"vffvfvf",
-                                "subordinateChannel":"三星"
-                            },
-                            {
-                                "creator":"doggy.wang (王二狗)",
-                                "createTime":"2018-11-11 09:08",
-                                "id":2,
-                                "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"华为vfvfvvfvfv222",
-                                "channelNumber":"HW0S0N84001",
-                                "remarks":"vffvfvf",
-                                "subordinateChannel":"三星222"
-                            },
-                            {
-                                "creator":"doggy.wang (王二狗222)",
-                                "createTime":"2018-11-11 09:08",
-                                "id":2,
-                                "img":"/dist/ece7b063418095d6997c2e3955ea0362.svg",
-                                "name":"华为vfvfv2vgbg",
-                                "channelNumber":"HW0S0N84001",
-                                "remarks":"vffvfvf",
-                                "subordinateChannel":"三星3444"
-                            }
-                        ];
-                        this.channelNumberTableData = channelNumberList;
-                        this.currentApp = "梦幻家园";
-                        this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
-                        this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
-                    }).catch((err) => {
-                        this.$Message.error('This is an error tip');
-                    });
-            },
             create(){
                 this.$router.push({
                     name: "appCreate"
@@ -353,6 +348,59 @@
             handleCurrentChange(val) {
                 this.curPage = val;
                 this.getChannelNumberList();
+            },
+            /*修改渠道弹框*/
+            updateModal(channelID){
+                var param  = {
+                    channelID:channelID
+                }
+                this.belongChannels = [
+                    {"channelName":"channelName11","channelID":"channelID11"},
+                    {"channelName":"channelName22","channelID":"channelID22"}
+                ]
+                this.$get(this.api.getChannelList, param).then((res) =>{
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                        this.belongChannels = [
+                            {"channelName":"cdfvf11222211","channelID":"1112"},
+                            {"channelName":"22223vgg222222222222222","channelID":"12222112"}
+                        ]
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
+                }).catch((err) => {
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
+                this.updateChannelModel = true;
+            },
+            /*删除渠道弹框*/
+            deleteModal(channelID){
+                var param  = {
+                    channelID:channelID
+                }
+                this.belongChannels = [
+                    {"channelName":"channelName11","channelID":"1112"},
+                    {"channelName":"channelName22","channelID":"12222112"}
+                ]
+                this.$get(this.api.getChannelList, param).then((res) =>{
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                        this.belongChannels = [
+                            {"channelName":"channelName11","channelID":"1112"},
+                            {"channelName":"channelName22","channelID":"12222112"}
+                        ]
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
+                }).catch((err) => {
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
+                this.deleteChannelModel = true;
+            },
+            /*切换所属渠道*/
+            changeBelongChannel(val){
+                console.log(val)
+                this.searchOption.curSelectBelongChannelId = val;
             },
             exportData (type) {
                 if (type === 1) {
