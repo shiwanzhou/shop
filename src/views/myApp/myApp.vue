@@ -72,20 +72,20 @@
                  <div class="search">
                      <div class="system_platform">
                          <span class="text">系统平台：</span>
-                         <Select v-model="model1"  class="select" style="width:200px">
-                             <Option v-for="item in cityList" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                         <Select v-model="searchOption.currentSystemPlatformName" @on-change="changeSystemPlatform"  class="select" style="width:200px">
+                             <Option v-for="item in searchOption.systemPlatformList" :value="item.id" >{{ item.name }}</Option>
                          </Select>
                      </div>
                      <div class="input">
-                         <Input v-model="value4" icon="ios-search" placeholder="应用名称/备注信息" style="width: 300px"></Input>
+                         <Input v-model="searchOption.appName" icon="ios-search" @on-enter="search($event)"  placeholder="应用名称" style="width: 300px"></Input>
                      </div>
                  </div>
                  <div class="btn">
                      <div class="left_btn">
-                         <Radio-group v-model="tab" type="button">
-                             <Radio label="large">最近访问</Radio>
-                             <Radio label="default">我创建的</Radio>
-                             <Radio label="default2">最新创建</Radio>
+                         <Radio-group v-model="searchOption.tab" type="button">
+                             <Radio label="recentVisit">最近访问</Radio>
+                             <Radio label="oneselfCreate">我创建的</Radio>
+                             <Radio label="latestCreate">最新创建</Radio>
                          </Radio-group>
                      </div>
                      <div class="right_btn">
@@ -127,7 +127,7 @@
                          <Table :columns="appTableColumns" :data="appTableData"></Table>
                          <div class="clear"></div>
                          <div class="page">
-                             <Page :total="totalPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
+                             <Page :total="totalPage" :current="curPage" show-total show-elevator show-sizer  @on-change="handleCurrentChange"></Page>
                          </div>
                      </div>
                  </div>
@@ -173,8 +173,20 @@
         name: 'appInfo',
         data () {
             return {
+                api:{
+                    "getAppList":this.$url+"unified_account/getApp",  //获取应用列表
+                },
                 channelManagementHref:this.$url+"/#/issueChannel/channelNumber",
-                tab:"large",
+                searchOption:{
+                    appName:"",
+                    tab:"recentVisit",
+                    systemPlatformList:[
+                        {"id":"IOSid","name":"IOS"},
+                        {"id":"Androidid","name":"Android"}
+                    ],
+                    currentSystemPlatformName:"",
+                    currentSystemPlatformId:""
+                },
                 currentApp: "",
                 currentAppSrc: "",
                 avatorPath: "",
@@ -312,8 +324,29 @@
                 this.showAppCardList = !this.showAppCardList;
                 this.changeAppIndex = index;
             },
-            getAppList(){
-                this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
+            /*重置分页器*/
+            resetPage(){
+                this.curPage = 1;
+                this.totalPage = 20;
+                this.pageSize = this.$pageSize;
+            },
+            /*搜索渠道号列表*/
+            search(){
+                this.getAppList(1);
+            },
+            getAppList(searchStatus){
+                if(searchStatus){
+                    this.resetPage()
+                }
+                var param  = {
+                    "page":this.curPage,
+                    "pageSize":this.pageSize,
+                    "appName":this.searchOption.appName,
+                    "tab":this.searchOption.tab,
+                    "currentSystemPlatformId":this.searchOption.currentSystemPlatformId
+                }
+                console.log(param)
+                this.$get(this.api.getAppList, {}).then((res) => {
                     console.log(res)
                     let appList = [
                         {"creator":"Fuller","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡","text":"这是一个演示控制台能力的DEMO，你可以先看看。","tag":"iOS"},
@@ -327,9 +360,21 @@
                     this.currentAppSrc = "/dist/ece7b063418095d6997c2e3955ea0362.svg";
                     this.avatorPath = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAELSURBVEhLxZRbCoQwDEVnteo+xA91iwr672MJHe5M20njjQ8G8cAF0SQH29KXu5nnBdM0uTzPXZZlSYqicPM8+yobU4BmPdTKsiy+awsV1HVNB+2laRrfnbIRWMP7vvcV7vPMapgkEeBXWaMcHui6jtbq5UoErAGxYLWIJApwWlgxYsFqEfkXUcCOYsiVJUJwhANRwAplpGRveEjgtOBqAs8LqqryFVvKsqQ9SCAKsDFW0RG6j26yvnuuInvpMQWyaBxH//aYYRiSXkki0FfFGYkevq6r//IlEQBcWLJBrqdG71vbtv7Lj40AaMmZsOGACoB1s7LoZZGYggBE7AjjnTwtFoeCf7lZ4NwbwtpbArKxQn4AAAAASUVORK5CYII=";
                     this.appTableData = appList;
+                    var res = res.data;
+                    if(res.code === 1 && res.data && res.data.records){
+                       // this.channelNumberTableData = res.data.records;
+                       // this.totalPage = res.data.total;
+                    } else {
+                        this.$Message.error(res.msg);
+                    }
                 }).catch((err) => {
-                    this.$Message.error('This is an error tip');
+                    this.$Message.error(this.$ajaxErrorMsg);
                 });
+            },
+            /*切换选择系统平台*/
+            changeSystemPlatform(val){
+                console.log(val)
+                this.searchOption.currentSystemPlatformId = val;
             },
             changeApp(){
                 this.showAppList = !this.showAppList

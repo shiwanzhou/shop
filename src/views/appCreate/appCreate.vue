@@ -209,6 +209,9 @@
                 if(this.form.name == ""){
                     this.showError = 1;
                     this.error = "请输入应用名称！";
+                } else if(this.form.name.length > 100){
+                    this.showError = 1;
+                    this.error = "请输入1-100个字符！";
                 } else if(!this.form.systemPlatform.length){
                     this.showError = 1;
                     this.error = "请选择系统平台！";
