@@ -465,6 +465,7 @@ em{font-style:normal;color: #909399;}
     margin-bottom: 20px;
     padding-left: 20px;
     padding-right: 20px;
+    position: relative;
 }
 .roleManagement .module .item {
     border-top: 1px solid #e9eaec;
@@ -481,7 +482,7 @@ em{font-style:normal;color: #909399;}
 .roleManagement .module .item .checkbox_group{
     display: inline-block;
     width: 100%;
-    margin-left: 165px;
+    margin-left: 100px;
 }
 .roleManagement .module .item .checkbox_group label{margin-right: 35px;line-height: 50px;}
 .roleManagement .detail .update{
@@ -523,4 +524,32 @@ em{font-style:normal;color: #909399;}
 .accountCenter .item_table_platform .right{
     width: 93%;
 }
+.accountCenter .addApp{
+    margin-left: 70px;
+    margin-bottom: 30px;
+}
 
+/*编辑用户信息*/
+.updateUserInfo{}
+.updateUserInfo .update{margin-right: 20px;}
+
+/*公司角色管理*/
+.companyRoleManagement{}
+.companyRoleManagement .select .item{
+    display: flex;
+    margin-bottom: 38px;
+}
+.companyRoleManagement .select .item .text{
+    margin-right: 40px;
+}
+.companyRoleManagement .select .item .role_tab{}
+.companyRoleManagement .select .desc_text{
+    margin-bottom: 30px;
+    margin-top: -20px;
+    margin-left: 97px;
+}
+.companyRoleManagement .select .right .setup{
+    position: absolute;
+    top: 0;
+    right: 0;
+}

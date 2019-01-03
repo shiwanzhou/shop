@@ -26,7 +26,7 @@
 </template>
 
 <script>
-    import  $  from  'jquery';
+
     export default {
         name: 'userLogin',
         data () {
@@ -55,13 +55,30 @@
             changeVisitorLogin(status){
                 console.log(999)
                 console.log(status)
-                var param = {
+              /*  var param = {
                     status:status
-                }
-                this.$post(`${this.$url}unified_account/getApp`, param).then((res) => {
+                }*/
+             /*   this.$post(`${this.$url}unified_account/getApp`, param).then((res) => {
                     console.log(res)
                 }).catch((err) => {
                     this.$Message.error('设置失败！');
+                });*/
+               var url =  this.$url+"channel/createBelongChannel"
+                var param = {
+                   name:"111",
+                   remark:"2334g"
+                }
+                $.ajax({
+                    url: url,
+                    type: "POST",
+                    datType: "JSON",
+                    contentType: "application/json",
+                    data: JSON.stringify(param),
+                    success: function(data){
+                      console.log(data)
+                    },
+                    error:function (XMLHttpRequest, textStatus, errorThrown) {
+                    }
                 });
             },
             changeAccountLogin(status){

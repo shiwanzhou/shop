@@ -72,7 +72,10 @@
                                     <Icon type="arrow-down-b"></Icon>
                                 </a>
                                 <DropdownMenu slot="list">
-                                    <DropdownItem name="ownSpace" >帐号中心</DropdownItem>
+                                    <DropdownItem name="ownSpace"><Icon  type="ios-person-outline" class="user-dropdown-menu-icon"></Icon>帐号中心</DropdownItem>
+                                    <DropdownItem name="ownSpace"><div class="desc_text">创梦天地</div></DropdownItem>
+                                    <DropdownItem name="companyMemberManagement"><Icon  type="person-stalker" class="user-dropdown-menu-icon"></Icon>公司成员管理</DropdownItem>
+                                    <DropdownItem name="companyRoleManagement"><Icon  type="compose" class="user-dropdown-menu-icon"></Icon>角色/权限管理</DropdownItem>
                                     <DropdownItem name="loginout"  divided>退出登录</DropdownItem>
                                 </DropdownMenu>
                             </Dropdown>
@@ -186,19 +189,17 @@
                     this.$router.push({
                         name: 'accountCenter'
                     });
-                   /* const title = '你有未提交的修改内容';
-                    const content = '<p>注意：一旦离开，未提交的修改内容将会丢失。</p>';
-                    this.$Modal.confirm({
-                         title: title,
-                         content: content,
-                         okText: '离开',
-                         cancelText: '留在当前页面',
-                         onOk: () => {
-                         },
-                         onCancel: () => {
-                        }
-                    });*/
-                } else if (name === 'loginout') {
+                }  else if (name === 'companyMemberManagement') {
+                    this.$router.push({
+                        name: 'companyMemberManagement'
+                    });
+                }
+                else if (name === 'companyRoleManagement') {
+                    this.$router.push({
+                        name: 'companyRoleManagement'
+                    });
+                }
+                else if (name === 'loginout') {
                     // 退出登录
                     this.$store.dispatch('logout', this);
                     this.$router.push({

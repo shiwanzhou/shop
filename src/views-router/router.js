@@ -20,6 +20,35 @@ export const accountCenterRouter = {
     component: resolve => require(['../views/user/accountCenter.vue'], resolve)
 };
 
+export const updateUserInfoRouter = {
+    path: '/updateUserInfo',
+    name: 'updateUserInfo',
+    meta: {
+        title: 'updateUserInfo - 编辑用户信息'
+    },
+    component: resolve => require(['../views/user/updateUserInfo.vue'], resolve)
+};
+
+
+export const companyRoleManagementRouter = {
+    path: '/companyRoleManagement',
+    name: 'companyRoleManagement',
+    meta: {
+        title: 'companyRoleManagement - 公司角色管理'
+    },
+    component: resolve => require(['../views/user/companyRoleManagement.vue'], resolve)
+};
+
+export const companyMemberManagementRouter = {
+    path: '/companyMemberManagement',
+    name: 'companyMemberManagement',
+    meta: {
+        title: 'companyMemberManagement - 公司成员管理'
+    },
+    component: resolve => require(['../views/user/companyMemberManagement.vue'], resolve)
+};
+
+
 export const appCreateRouter = {
     path: '/appCreate',
     name: 'appCreate',
@@ -203,6 +232,9 @@ export const routers = [
     appCreateSucRouter,
     myAppRouter,
     otherRouter,
+    updateUserInfoRouter,
     ...appRouter,
+    companyRoleManagementRouter,
+    companyMemberManagementRouter,
     page404,
 ];

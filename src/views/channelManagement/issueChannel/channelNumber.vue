@@ -49,7 +49,6 @@
                                 v-model="createChannelModel"
                                 @on-ok="createChannelOk"
                                 @on-cancel="cancel"
-                                :loading="loading"
                                 class-name="vertical-center-modal  form createChannelModel" width="650">
                             <div class="content">
                                 <Alert type="error" v-show="showError" show-icon></Alert>
@@ -84,6 +83,10 @@
                                         <div class="desc_text"> 1-500个字符。如：应用指定业务投放合作。</div>
                                     </div>
                                 </div>
+                            </div>
+                            <div slot="footer">
+                                <Button type="text" size="large" @click="createChannelModelCancel">取消</Button>
+                                <Button type="primary" size="large" @click="createChannelModelOk">创建</Button>
                             </div>
                         </Modal>
                     </div>
@@ -401,6 +404,32 @@
             changeBelongChannel(val){
                 console.log(val)
                 this.searchOption.curSelectBelongChannelId = val;
+            },
+            /*取消创建渠道*/
+            createChannelModelCancel(){
+                this.showError = false;
+                this.createChannelModel = false;
+            },
+            /*确定创建渠道*/
+            createChannelModelOk(){
+                this.validateCreateChannel("");
+                if(!this.showError){
+                    this.createChannelModel = false;
+                    var param = {
+                        channelName:this.createChannelParam.channelName,
+                        remarks:this.createChannelParam.remarks
+                    };
+                    this.$post(this.api.getChannelList, param).then((res) =>{
+                        var res = res.data;
+                        if(res.code === 1){
+                            this.$Message.success(res.msg);
+                        } else {
+                            this.$Message.error(res.msg);
+                        }
+                    }).catch((err) => {
+                        this.$Message.error(this.$ajaxErrorMsg);
+                    });
+                }
             },
             exportData (type) {
                 if (type === 1) {

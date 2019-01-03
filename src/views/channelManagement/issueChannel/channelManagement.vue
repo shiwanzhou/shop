@@ -79,7 +79,7 @@
                         <span class="text">所属渠道：</span>
                         <div class="right">
                             <Select placeholder="请选择渠道" @on-change="changeChannelDeleteModel"  v-model="curSelectChannelDeleteModel" slot="prepend" style="width: 320px">
-                                <Option v-for="item in belongChannels" :value="item.channelID"  >{{item.channelName}}</Option>
+                                <Option v-for="item in belongChannels" :value="item.id"  >{{item.belongChannelName}}</Option>
                             </Select>
                             <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
                         </div>
@@ -106,7 +106,7 @@
                         <span class="text">所属渠道：</span>
                         <div class="right">
                             <Select  v-model="curSelectChannelUpdateModel" @on-change="changeChannelUpdateModel"  placeholder="请选择渠道" slot="prepend" style="width: 320px">
-                                <Option v-for="item in belongChannels" :value="item.channelID" >{{item.channelName}}</Option>
+                                <Option v-for="item in belongChannels" :value="item.id"  >{{item.belongChannelName}}</Option>
                             </Select>
                             <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
                         </div>
@@ -132,9 +132,9 @@
             return {
                 api:{
                     "getChannelList":this.$url+"channel/getAllChannel", //获取渠道列表
-                    "createChannel":this.$url+"channel/createChannel",  //创建渠道
-                    "updateChannel":this.$url+"channel/updateChannel",   //修改渠道
-                    "deleteChannel":this.$url+"channel/deleteChannel"   //删除渠道
+                    "getBelongChannel":this.$url+"channel/getBelongChannel",  //获取所属渠道渠道列表
+                    "updateBelongChannel":this.$url+"channel/updateBelongChannel",   //修改所属渠道
+                    "createBelongChannel":this.$url+"channel/createBelongChannel"   //
                 },
                 createChannelModel:false,
                 deleteChannelModel:false,
@@ -147,6 +147,7 @@
                 curSelectChannelDeleteModel:"",
                 curSelectChannelUpdateModel:"",
                 currentSelectBelongChannelId:"",
+                currentLineChannelId:"",
                 belongChannels:[],
                 error:{
                     createChannelError:"",
@@ -155,7 +156,6 @@
                 },
                 searchOption:{
                     channelNumberName:"",
-                    subordinateChannel:[]
                 },
                 channelNumberTableData:[],
                 channelNumberTableColumns: [
@@ -209,7 +209,7 @@
                                     on: {
                                         click:function(event) {
                                              event.preventDefault();
-                                            _this.updateModal(params.row.channelID)
+                                            _this.updateModal(params.row.id)
                                         }
                                     }
                                 }),
@@ -224,7 +224,7 @@
                                     on: {
                                         click:function(event) {
                                             event.preventDefault();
-                                            _this.deleteModal(params.row.channelID)
+                                            _this.deleteModal(params.row.id)
                                         }
                                     }
                                 })
@@ -296,20 +296,12 @@
             },
             /*修改渠道弹框*/
             updateModal(channelID){
-                var param  = {
-                    channelID:channelID
-                }
-                this.belongChannels = [
-                    {"channelName":"channelName11","channelID":"channelID11"},
-                    {"channelName":"channelName22","channelID":"channelID22"}
-                ]
-                this.$get(this.api.getChannelList, param).then((res) =>{
+                this.currentLineChannelId = channelID;
+                this.$get(this.api.getBelongChannel, {}).then((res) =>{
                     var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.belongChannels = [
-                            {"channelName":"cdfvf11222211","channelID":"1112"},
-                            {"channelName":"22223vgg222222222222222","channelID":"12222112"}
-                        ]
+                    if(res.code === 1 && res.data && res.data.length){
+                        this.belongChannels = res.data;
+                        console.log( this.belongChannels)
                     } else {
                         this.$Message.error(res.msg);
                     }
@@ -320,20 +312,11 @@
             },
             /*删除渠道弹框*/
             deleteModal(channelID){
-                var param  = {
-                    channelID:channelID
-                }
-                this.belongChannels = [
-                    {"channelName":"channelName11","channelID":"1112"},
-                    {"channelName":"channelName22","channelID":"12222112"}
-                ]
-                this.$get(this.api.getChannelList, param).then((res) =>{
+                this.currentLineChannelId = channelID;
+                this.$get(this.api.getBelongChannel, {}).then((res) =>{
                     var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.belongChannels = [
-                            {"channelName":"channelName11","channelID":"1112"},
-                            {"channelName":"channelName22","channelID":"12222112"}
-                        ]
+                    if(res.code === 1 && res.data && res.data.length){
+                        this.belongChannels = res.data;
                     } else {
                         this.$Message.error(res.msg);
                     }
@@ -360,8 +343,6 @@
             },
             /*确定修改渠道*/
             updateChannelModelOk(){
-                console.log(233)
-                console.log(this.curSelectChannelUpdateModel)
                 if(this.curSelectChannelUpdateModel == ""){
                     this.showError = 1;
                     this.error.updateChannelError = "请选择渠道！";
@@ -370,12 +351,11 @@
                 }
                 if(!this.showError){
                     var param  = {
-                        channelID:this.currentSelectBelongChannelId
+                        oldId:this.currentLineChannelId,
+                        newId:this.currentSelectBelongChannelId
                     }
-                    this.$post(this.api.getChannelList, param).then((res) =>{
-                        console.log(res)
-                        this.updateChannelModel = false;
-                        this.$Message.success('修改渠道成功！')
+                    this.$post(this.api.updateBelongChannel, param).then((res) =>{
+                        var res = res.data;
                         this.updateChannelModelCancel();
                         if(res.code === 1){
                             this.$Message.success(res.msg);
@@ -397,15 +377,14 @@
                 }
                 if(!this.showError){
                     var param  = {
-                        channelID:this.currentSelectBelongChannelId
+                        oldId:this.currentLineChannelId,
+                        newId:this.currentSelectBelongChannelId
                     }
                     console.log(param.channelID)
                     this.$post(this.api.getChannelList, param).then((res) =>{
-                        console.log(res)
-                        this.deleteChannelModel = false;
-                        this.$Message.success('修改渠道成功！');
-                        this.deleteChannelModelCancel();
                         var res = res.data;
+                        this.deleteChannelModel = false;
+                        this.deleteChannelModelCancel();
                         if(res.code === 1){
                             this.$Message.success(res.msg);
                         } else {
@@ -427,10 +406,10 @@
                 if(!this.showError){
                     this.createChannelModel = false;
                     var param = {
-                        channelName:this.createChannelParam.channelName,
-                        remarks:this.createChannelParam.remarks
+                        name:this.createChannelParam.channelName,
+                        remark:this.createChannelParam.remarks
                     };
-                    this.$post(this.api.getChannelList, param).then((res) =>{
+                    this.$post(this.api.createBelongChannel, param).then((res) =>{
                         var res = res.data;
                         if(res.code === 1){
                             this.$Message.success(res.msg);

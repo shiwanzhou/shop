@@ -7,7 +7,7 @@
 <template>
     <div class="appInfo roleManagement">
         <div class="title">角色/权限</div>
-        <div class="desc">管理各角色在控制台中可以访问的资源与权限。目前业务控制台仅支持编辑预设角色的权限，需要新增角色请联系 <a class="blue" href="mailto:example@email.com">example@email.com </a>。</div>
+        <div class="desc">管理各角色在 {应用名称} 下中可以访问的资源与权限。</div>
         <div class="border"></div>
         <!--角色详情-->
         <div class="detail">
@@ -23,60 +23,34 @@
                <div class="item">
                    <div class="left">
                        <span class="name">模块一</span>
-                       <Checkbox
-                               :indeterminate="indeterminate"
-                               :value="checkAll"
-                               class="checkAll"
-                               @click.prevent.native="handleCheckAll">全选</Checkbox>
                    </div>
-                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                       <Checkbox label="权限一"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
+                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup"  @on-change="checkAllGroupChange">
+                       <Checkbox label="权限一" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限二" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限三" disabled="disabled"></Checkbox>
                    </CheckboxGroup>
                </div>
-              <!-- <div class="item">
+               <div class="item">
                    <div class="left">
                        <span class="name">模块二</span>
-                       <Checkbox
-                               :indeterminate="indeterminate"
-                               :value="checkAll"
-                               class="checkAll"
-                               @click.prevent.native="handleCheckAll">全选</Checkbox>
                    </div>
-                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                       <Checkbox label="权限一"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
+                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup"  @on-change="checkAllGroupChange">
+                       <Checkbox label="权限一" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限二" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限三" disabled="disabled"></Checkbox>
                    </CheckboxGroup>
                </div>
                <div class="item">
                    <div class="left">
                        <span class="name">模块三</span>
-                       <Checkbox
-                               :indeterminate="indeterminate"
-                               :value="checkAll"
-                               class="checkAll"
-                               @click.prevent.native="handleCheckAll">全选</Checkbox>
                    </div>
-                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup" @on-change="checkAllGroupChange">
-                       <Checkbox label="权限一"></Checkbox>
-                       <Checkbox label="权限二"></Checkbox>
-                       <Checkbox label="权限三"></Checkbox>
+                   <CheckboxGroup class="checkbox_group" v-model="checkAllGroup"  @on-change="checkAllGroupChange">
+                       <Checkbox label="权限一" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限二" disabled="disabled"></Checkbox>
+                       <Checkbox label="权限三" disabled="disabled"></Checkbox>
                    </CheckboxGroup>
-               </div>-->
+               </div>
            </div>
-            <Button type="primary" class="update" size="large" @click="update">更新</Button>
         </div>
     </div>
 </template>
@@ -91,10 +65,6 @@
                 checkAll: false,
                 checkAllGroup: []
             };
-        },
-        computed: {
-        },
-        created(){
         },
         mounted(){
             this.getRoleList();
@@ -163,17 +133,6 @@
                 }).catch((err) => {
                     this.$Message.error('This is an error tip');
                 });
-            },
-            update(){
-                console.log("update");
-            },
-            delete(){
-                console.log("delete");
-            },
-            createMember(){
-                /* this.$router.push({
-                 name: "appCreate"
-                 });*/
             },
             handleCheckAll () {
                 if (this.indeterminate) {

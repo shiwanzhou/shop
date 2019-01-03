@@ -5,58 +5,66 @@
     <div class="main appCreate" >
         <top-header></top-header>
         <!--我的应用-->
-        <div class="appInfo accountCenter">
-            <div class="title">帐号中心</div>
-            <div class="desc">更新修改个人帐号信息请联系请联系业务负责人或 <a class="blue" href="">example@email.com</a>。</div>
+        <div class="appInfo accountCenter updateUserInfo">
+            <div class="title">编辑用户信息</div>
+            <div class="desc">更新修改个人帐号信息请联系请联系 <a class="blue" href="">example@email.com</a>。</div>
             <div class="border"></div>
             <div class="content form">
-                <div class="item">
-                    <span class="text">姓名：</span>
-                    <div class="right">
-                        <Input type="text" disabled style="width: 330px;" value="jasen"></Input>
+                <Row>
+                    <Col span="12">
+                        <div class="item">
+                            <span class="text">姓名：</span>
+                            <div class="right">
+                                <Input type="text"  style="width: 330px;" value="jasen"></Input>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="text">创建时间：</span>
+                            <div class="right">
+                                <span class="desc">yy-mm-dd HH:MM</span>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <span class="text">公司：</span>
+                            <div class="right">
+                                <Input type="text"  style="width: 330px;" value="创梦天地"></Input>
+                            </div>
+                        </div>
+                    </Col>
+                    <Col span="12">
+                        <div class="item">
+                            <span class="text">近期登陆：</span>
+                            <div class="right">
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                                <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+                <Row>
+                    <div class="item item_table_app" >
+                        <span class="text">应用访问：</span>
+                        <div class="right">
+                            <Table :columns="appTableColumns" :data="appTableData"></Table>
+                        </div>
                     </div>
-                </div>
-                <div class="item">
-                    <span class="text">帐号类型：</span>
-                    <div class="right">
-                        <Input type="text" disabled style="width: 330px;" value="企业微信"></Input>
+                    <Button class="addApp" size="large" @click="cancelCreate">添加至应用</Button>
+                </Row>
+                <Row>
+                    <div class="item item_table_app  item_table_platform" >
+                        <span class="text">平台服务访问：</span>
+                        <div class="right">
+                            <Table :columns="platformTableColumns" :data="platformTableData"></Table>
+                        </div>
                     </div>
-                </div>
-                <div class="item">
-                    <span class="text">创建时间：</span>
-                    <div class="right">
-                        <span class="desc">yy-mm-dd HH:MM</span>
-                    </div>
-                </div>
-                <div class="item">
-                    <span class="text">公司：</span>
-                    <div class="right">
-                        <Input type="text" disabled style="width: 330px;" value="创梦天地"></Input>
-                    </div>
-                </div>
-                <div class="item item_table_app" style="display: block">
-                    <span class="text">应用访问：</span>
-                    <div class="right">
-                        <Table :columns="appTableColumns" :data="appTableData"></Table>
-                    </div>
-                </div>
-                <div class="item item_table_app  item_table_platform" style="display: block">
-                    <span class="text">平台服务访问：</span>
-                    <div class="right">
-                        <Table :columns="platformTableColumns" :data="platformTableData"></Table>
-                    </div>
-                </div>
-                <div class="item">
-                    <span class="text">近期登陆：</span>
-                    <div class="right">
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                        <div class="desc">yy-mm-dd HH:MM  IP：210.21.221.18</div>
-                    </div>
-                </div>
+                    <Button class="addApp" size="large" @click="cancelCreate">添加至平台服务</Button>
+                </Row>
+                <Button type="primary" class="update" size="large" @click="create">更新</Button>
+                <Button class="cancel" size="large" @click="cancelCreate">取消</Button>
             </div>
         </div>
     </div>
@@ -64,7 +72,7 @@
 <script>
     import topHeader from '../main-components/header/header.vue';
     export default {
-        name: 'accountCenter',
+        name: 'updateUserInfo',
         components: {
             topHeader
         },
@@ -72,6 +80,20 @@
             return {
                 channelManagementHref:this.$url+"/#/issueChannel/channelNumber",
                 tab:"large",
+                currentApp: "",
+                currentAppSrc: "",
+                avatorPath: "",
+                showAppList: false,
+                appList: [],
+                menuTheme: "dark",
+                shrink: false,
+                userName: '',
+                tabIndex: 0,
+                changeAppIndex:1,
+                curPage:1,
+                totalPage:20,
+                pageSize:this.$pageSize,
+                showAppCardList:false,
                 appTableData:[],
                 appTableColumns: [
                     {
@@ -265,6 +287,15 @@
             this.getAppList();
         },
         methods: {
+            create(){
+                this.$router.push({
+                    name: 'appCreate'
+                });
+            },
+            changeAppList(index){
+                this.showAppCardList = !this.showAppCardList;
+                this.changeAppIndex = index;
+            },
             getAppList(){
                 this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
                     console.log(res)
