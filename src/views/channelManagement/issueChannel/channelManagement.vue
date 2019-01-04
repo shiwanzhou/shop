@@ -131,10 +131,11 @@
         data () {
             return {
                 api:{
-                    "getChannelList":this.$url+"channel/getAllChannel", //获取渠道列表
-                    "getBelongChannel":this.$url+"channel/getBelongChannel",  //获取所属渠道渠道列表
+                    "getChannelList":this.$url+"channel/getAllChannel",              //获取渠道列表
+                    "getBelongChannel":this.$url+"channel/getBelongChannel",         //获取所属渠道渠道列表
                     "updateBelongChannel":this.$url+"channel/updateBelongChannel",   //修改所属渠道
-                    "createBelongChannel":this.$url+"channel/createBelongChannel"   //
+                    "createBelongChannel":this.$url+"channel/createBelongChannel",   //创建渠道
+                    "removeBelongChannel":this.$url+"channel/removeBelongChannel"    //删除渠道
                 },
                 createChannelModel:false,
                 deleteChannelModel:false,
@@ -261,16 +262,11 @@
                     "pageSize":this.pageSize,
                     "query":channelName || ""
                 };
-                this.$get(this.api.getChannelList, param).then((res) =>{
+                this.$get(this.api.getChannelList, param, (data) =>{
                     this.channelNumberTableData = [];
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.channelNumberTableData = res.data.records;
-                        this.totalPage = res.data.total;
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                    this.channelNumberTableData = data.result.records;
+                    this.totalPage = data.result.total;
+                }, (data) =>{
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
             },
@@ -287,25 +283,13 @@
                 } else {
                     this.showError = 0;
                 }
-                if(!this.showError){
-                    this.loading = false;
-                } else {
-                    this.loading = true;
-
-                }
             },
             /*修改渠道弹框*/
             updateModal(channelID){
                 this.currentLineChannelId = channelID;
-                this.$get(this.api.getBelongChannel, {}).then((res) =>{
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.length){
-                        this.belongChannels = res.data;
-                        console.log( this.belongChannels)
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                this.$get(this.api.getBelongChannel, {}, (data) =>{
+                    this.belongChannels = data.result;
+                }, (data) =>{
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
                 this.updateChannelModel = true;
@@ -313,14 +297,9 @@
             /*删除渠道弹框*/
             deleteModal(channelID){
                 this.currentLineChannelId = channelID;
-                this.$get(this.api.getBelongChannel, {}).then((res) =>{
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.length){
-                        this.belongChannels = res.data;
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                this.$get(this.api.getBelongChannel, {}, (data) =>{
+                    this.belongChannels = data.result;
+                }, (data) =>{
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
                 this.deleteChannelModel = true;
@@ -354,15 +333,10 @@
                         oldId:this.currentLineChannelId,
                         newId:this.currentSelectBelongChannelId
                     }
-                    this.$post(this.api.updateBelongChannel, param).then((res) =>{
-                        var res = res.data;
+                    this.$post(this.api.updateBelongChannel, param, (data) =>{
                         this.updateChannelModelCancel();
-                        if(res.code === 1){
-                            this.$Message.success(res.msg);
-                        } else {
-                            this.$Message.error(res.msg);
-                        }
-                    }).catch((err) => {
+                        this.$Message.success(data.desc);
+                    }, (data) =>{
                         this.$Message.error(this.$ajaxErrorMsg);
                     });
                 }
@@ -377,20 +351,13 @@
                 }
                 if(!this.showError){
                     var param  = {
-                        oldId:this.currentLineChannelId,
-                        newId:this.currentSelectBelongChannelId
+                        id:this.currentSelectBelongChannelId
                     }
-                    console.log(param.channelID)
-                    this.$post(this.api.getChannelList, param).then((res) =>{
-                        var res = res.data;
+                    this.$get(this.api.removeBelongChannel, param, (data) =>{
                         this.deleteChannelModel = false;
                         this.deleteChannelModelCancel();
-                        if(res.code === 1){
-                            this.$Message.success(res.msg);
-                        } else {
-                            this.$Message.error(res.msg);
-                        }
-                    }).catch((err) => {
+                        this.$Message.success(data.desc);
+                    }, (data) =>{
                         this.$Message.error(this.$ajaxErrorMsg);
                     });
                 }
@@ -409,14 +376,9 @@
                         name:this.createChannelParam.channelName,
                         remark:this.createChannelParam.remarks
                     };
-                    this.$post(this.api.createBelongChannel, param).then((res) =>{
-                        var res = res.data;
-                        if(res.code === 1){
-                            this.$Message.success(res.msg);
-                        } else {
-                            this.$Message.error(res.msg);
-                        }
-                    }).catch((err) => {
+                    this.$post(this.api.createBelongChannel, param, (data) =>{
+                        this.$Message.success(data.desc);
+                    }, (data) =>{
                         this.$Message.error(this.$ajaxErrorMsg);
                     });
                 }

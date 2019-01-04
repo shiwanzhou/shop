@@ -26,8 +26,8 @@
                     </Radio-group>
                     <div class="subordinateChannel">
                        <span>所属渠道：</span>
-                        <Select placeholder="请选择渠道" @on-change="changeBelongChannel"  v-model="curSelectBelongChannel" slot="prepend" style="width: 320px">
-                            <Option v-for="item in belongChannels" :value="item.channelID"  >{{item.channelName}}</Option>
+                        <Select placeholder="请选择渠道" @on-change="changeBelongChannel"  v-model="curSelectBelongChannel" slot="prepend" style="width: 220px">
+                            <Option v-for="item in belongChannels2" :value="item.channelID"  >{{item.channelName}}</Option>
                         </Select>
                     </div>
                 </div>
@@ -43,7 +43,7 @@
                     <div class="right">
                         <Button  icon="ios-download-outline"  @click="batchExport">全部导出</Button>
                         <Button  icon="ios-upload-outline"  @click="batchImportModel = true">批量导入</Button>
-                        <Button type="primary" class="update" size="large" @click="createChannelModel = true">创建</Button>
+                        <Button type="primary" class="update" size="large" @click="createChannel">创建</Button>
                         <Modal
                                 title="创建渠道号"
                                 v-model="createChannelModel"
@@ -55,9 +55,8 @@
                                 <div class="item select_item">
                                     <span class="text">所属渠道：</span>
                                     <div class="right">
-                                        <Select placeholder="请选择渠道" v-model="select1" slot="prepend" style="width: 330px">
-                                            <Option value="http">http://</Option>
-                                            <Option value="https">https://</Option>
+                                        <Select placeholder="请选择渠道"  @on-change="changeChannelCreateModel"  slot="prepend" style="width: 330px">
+                                            <Option v-for="item in belongChannels" :value="item.id"  >{{item.belongChannelName}}</Option>
                                         </Select>
                                         <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
                                     </div>
@@ -65,21 +64,21 @@
                                 <div class="item">
                                     <span class="text channel_name_text">渠道名称：</span>
                                     <div class="right">
-                                        <Input type="text" style="width: 330px;" placeholder="请输入渠道号名称"></Input>
+                                        <Input type="text" v-model="createChannelParam.name" style="width: 330px;" placeholder="请输入渠道号名称"></Input>
                                         <div class="desc_text">1-100个字符。用于协作沟通识别指定的渠道号。</div>
                                     </div>
                                 </div>
                                 <div class="item">
                                     <span class="text channel_name_text">渠道号：</span>
                                     <div class="right">
-                                        <Input type="text" style="width: 330px;" placeholder="请输入渠道号"></Input>
+                                        <Input type="text" v-model="createChannelParam.identifier" style="width: 330px;" placeholder="请输入渠道号"></Input>
                                         <div class="desc_text"> 1-100数字、字母、符号组合。</div>
                                     </div>
                                 </div>
                                 <div class="item">
                                     <span class="text">备注<em>(可选)</em>：</span>
                                     <div class="right">
-                                        <Input type="textarea" :rows="4"  style="width: 330px; " placeholder="如有必要，请说明添加渠道号的场景与用途。"></Input>
+                                        <Input type="textarea" :rows="4" v-model="createChannelParam.remark"  style="width: 330px; " placeholder="如有必要，请说明添加渠道号的场景与用途。"></Input>
                                         <div class="desc_text"> 1-500个字符。如：应用指定业务投放合作。</div>
                                     </div>
                                 </div>
@@ -150,8 +149,9 @@
         data () {
             return{
                 api:{
-                    "getChannelList":this.$url+"channel/getAllChannel", //获取渠道列表
-                    "createChannel":this.$url+"channel/createChannel",  //创建渠道
+                    "getChannelList":this.$url+"channel/getChannel", //获取渠道列表
+                    "getBelongChannel":this.$url+"channel/getBelongChannel",         //获取所属渠道渠道列表
+                    "createChannel":this.$url+"channel/create",  //创建渠道
                     "updateChannel":this.$url+"channel/updateChannel",   //修改渠道
                     "deleteChannel":this.$url+"channel/deleteChannel"   //删除渠道
                 },
@@ -160,7 +160,12 @@
                 stopChannelModel:false,
                 batchImportModel:false,
                 showError:false,
-                loading: true,
+                createChannelParam:{
+                    belongChannel:"", //所属渠道id
+                    name:"",          //渠道号名称
+                    identifier:"",    //渠道号
+                    remark:""        //备注
+                },
                 curSelectBelongChannel:"",
                 belongChannels:[],
                 searchOption:{
@@ -171,20 +176,25 @@
                 channelNumberTableData:[],
                 channelNumberTableColumns: [
                     {
+                        type: 'selection',
+                        width: 60,
+                        align: 'center'
+                    },
+                    {
                         title: '渠道号名称 ',
                         key: 'belongChannelName'
                     },
                     {
-                        title: '渠道ID',
-                        key: 'id',
+                        title: '渠道号',
+                        key: 'identifier',
                     },
                     {
                         title: '备注',
                         key: 'remark',
                     },
                     {
-                        title: '渠道号数量',
-                        key: 'belongChannelNum',
+                        title: '所属渠道',
+                        key: 'belongChannelName',
                     },
                     {
                         title: '创建者',
@@ -226,7 +236,7 @@
                                 }),
                                 h('span',{
                                     domProps: {
-                                        innerHTML:"删除"
+                                        innerHTML:"停用"
                                     },
                                     style: {
                                         color:"#2d8cf0",
@@ -235,7 +245,7 @@
                                     on: {
                                         click:function(event) {
                                             event.preventDefault();
-                                            _this.deleteModal(params.row.channelID)
+                                            _this.stopModal(params.row.channelID)
                                         }
                                     }
                                 })
@@ -269,14 +279,9 @@
                     {"channelName":"channelName11","channelID":"channelID11"},
                     {"channelName":"channelName22","channelID":"channelID22"}
                 ]
-                this.$get(this.api.getChannelList, {}).then((res) =>{
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                this.$get(this.api.getChannelList, {}, (data) =>{
+                  //  this.belongChannels = data.result;
+                },(data) =>{
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
             },
@@ -294,21 +299,24 @@
                     "query":channelName || ""
                 };
                 console.log(param)
-                this.$get(this.api.getChannelList, param).then((res) =>{
+                this.$get(this.api.getChannelList, param, (data) =>{
                     this.channelNumberTableData = [];
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.channelNumberTableData = res.data.records;
-                        this.totalPage = res.data.total;
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                    this.channelNumberTableData = data.result.records;
+                    this.totalPage = data.result.total;
+                },(data) => {
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
             },
             update(){
                 this.updateChannelModel = true;
+            },
+            createChannel(){
+                this.createChannelModel = true;
+                this.$get(this.api.getBelongChannel, {}, (data) =>{
+                    this.belongChannels = data.result;
+                }, (data) =>{
+                    this.$Message.error(this.$ajaxErrorMsg);
+                });
             },
             batchExport(){
                 const title = '批量导出成功';
@@ -361,54 +369,65 @@
                     {"channelName":"channelName11","channelID":"channelID11"},
                     {"channelName":"channelName22","channelID":"channelID22"}
                 ]
-                this.$get(this.api.getChannelList, param).then((res) =>{
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.belongChannels = [
-                            {"channelName":"cdfvf11222211","channelID":"1112"},
-                            {"channelName":"22223vgg222222222222222","channelID":"12222112"}
-                        ]
-                    } else {
-                        this.$Message.error(res.msg);
-                    }
-                }).catch((err) => {
+                this.$get(this.api.getChannelList, param,(data) =>{
+                    this.belongChannels = [
+                        {"channelName":"cdfvf11222211","channelID":"1112"},
+                        {"channelName":"22223vgg222222222222222","channelID":"12222112"}
+                    ]
+                },(data) =>{
                     this.$Message.error(this.$ajaxErrorMsg);
                 });
                 this.updateChannelModel = true;
             },
-            /*删除渠道弹框*/
-            deleteModal(channelID){
-                var param  = {
-                    channelID:channelID
-                }
-                this.belongChannels = [
-                    {"channelName":"channelName11","channelID":"1112"},
-                    {"channelName":"channelName22","channelID":"12222112"}
-                ]
-                this.$get(this.api.getChannelList, param).then((res) =>{
-                    var res = res.data;
-                    if(res.code === 1 && res.data && res.data.records){
-                        this.belongChannels = [
-                            {"channelName":"channelName11","channelID":"1112"},
-                            {"channelName":"channelName22","channelID":"12222112"}
-                        ]
-                    } else {
-                        this.$Message.error(res.msg);
+            /*停用渠道弹框*/
+            stopModal(channelID){
+                this.$Modal.confirm({
+                    title: '你确定要停用你选择的渠道号吗？',
+                    content: '<p class="desc_text">影响：停用后其他服务将无法获取该渠道号的信息。例如：你无法再针对已停用的渠道号进行在线配置的修改与调整。</p>',
+                    okText: '停用',
+                    cancelText: '取消',
+                    onOk: () => {
+                        var param  = {
+                            channelID:channelID
+                        }
+                        this.$get(this.api.getChannelList, param,(data) =>{
+                            this.$Message.success(data.desc);
+                        },(data) => {
+                            this.$Message.error(this.$ajaxErrorMsg);
+                        });
+                    },
+                    onCancel: () => {
                     }
-                }).catch((err) => {
-                    this.$Message.error(this.$ajaxErrorMsg);
                 });
-                this.deleteChannelModel = true;
             },
             /*切换所属渠道*/
             changeBelongChannel(val){
                 console.log(val)
                 this.searchOption.curSelectBelongChannelId = val;
             },
+            /*创建弹框切换所属渠道*/
+            changeChannelCreateModel(val){
+                console.log(val)
+                this.createChannelParam.belongChannel = val;
+            },
             /*取消创建渠道*/
             createChannelModelCancel(){
                 this.showError = false;
                 this.createChannelModel = false;
+            },
+            validateCreateChannel(){
+                if(this.createChannelParam.channelName == ""){
+                    this.showError = 1;
+                    this.error.createChannelError = "渠道名称不能为空！";
+                } else if(this.createChannelParam.channelName.length > 100){
+                    this.showError = 1;
+                    this.error.createChannelError = "请输入1-100个渠道名称字符！";
+                } else  if(this.createChannelParam.remarks.length > 500){
+                    this.showError = 1;
+                    this.error.createChannelError = "请输入1-500个备注字符！";
+                } else {
+                    this.showError = 0;
+                }
             },
             /*确定创建渠道*/
             createChannelModelOk(){
@@ -416,17 +435,12 @@
                 if(!this.showError){
                     this.createChannelModel = false;
                     var param = {
-                        channelName:this.createChannelParam.channelName,
-                        remarks:this.createChannelParam.remarks
+                        name:this.createChannelParam.channelName,
+                        remark:this.createChannelParam.remarks
                     };
-                    this.$post(this.api.getChannelList, param).then((res) =>{
-                        var res = res.data;
-                        if(res.code === 1){
-                            this.$Message.success(res.msg);
-                        } else {
-                            this.$Message.error(res.msg);
-                        }
-                    }).catch((err) => {
+                    this.$post(this.api.createBelongChannel, param, (data) =>{
+                        this.$Message.success(data.desc);
+                    }, (data) =>{
                         this.$Message.error(this.$ajaxErrorMsg);
                     });
                 }

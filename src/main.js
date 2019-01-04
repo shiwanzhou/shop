@@ -32,7 +32,7 @@ if (location.href.indexOf('//localhost') != -1) {
 Vue.prototype.$url = $url;
 Vue.prototype.$qs = Qs;
 /* 定义请求 */
-Vue.prototype.$post = function (url, data, type) {
+Vue.prototype.$post2 = function (url, data, type) {
     return axios({
         method: 'post', // 请求协议
         url: url, // 请求的地址
@@ -44,7 +44,55 @@ Vue.prototype.$post = function (url, data, type) {
         }
     })
 };
-Vue.prototype.$get = function (url, params) {
+
+
+Vue.prototype.$post = function (url, data, sucCallback,errCallback) {
+    var _this = this;
+    return $.ajax({
+        url: url,
+        type: "POST",
+        datType: "JSON",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(data){
+            if(data && data.code === 0){
+                sucCallback && sucCallback(data);
+            } else {
+                if(data.desc){
+                    _this.$Message.error(data.desc);
+                }
+            }
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+            errCallback && errCallback(errorThrown)
+        }
+    });
+};
+
+Vue.prototype.$get = function (url, data, sucCallback,errCallback) {
+    var _this = this;
+    return $.ajax({
+        url: url,
+        type: "GET",
+        datType: "JSON",
+        contentType: "application/json",
+        data: data,
+        success: function(data){
+            if(data && data.code === 0){
+                sucCallback && sucCallback(data);
+            } else {
+                if(data.desc){
+                    _this.$Message.error(data.desc);
+                }
+            }
+        },
+        error:function (XMLHttpRequest, textStatus, errorThrown) {
+            errCallback && errCallback(errorThrown)
+        }
+    });
+};
+
+Vue.prototype.$get2 = function (url, params) {
     return axios({
         method: 'get', // 请求协议
         url: url, // 请求的地址

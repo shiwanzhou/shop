@@ -52,7 +52,35 @@
                             <Table :columns="appTableColumns" :data="appTableData"></Table>
                         </div>
                     </div>
-                    <Button class="addApp" size="large" @click="cancelCreate">添加至应用</Button>
+                    <Button class="addApp" size="large" @click="addToApp = true">添加至应用</Button>
+                    <Modal
+                            title="添加至应用"
+                            v-model="addToApp"
+                            class-name="vertical-center-modal  form addMemberModel" width="485">
+                        <div class="content">
+                            <Alert type="error" v-show="showError" show-icon></Alert>
+                            <div class="item">
+                                <span class="text">应用：</span>
+                                <div class="right">
+                                    <Select v-model="curtSelectApp"  style="width:300px">
+                                        <Option v-for="item in appTableData" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <span class="text">角色：</span>
+                                <div class="right">
+                                    <Select v-model="curtSelectRole"  style="width:300px">
+                                        <Option v-for="item in appTableData" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                                    </Select>
+                                </div>
+                            </div>
+                        </div>
+                        <div slot="footer">
+                            <Button type="text" size="large" @click="cancel">取消</Button>
+                            <Button type="primary" size="large" @click="submitAddToApp">添加</Button>
+                        </div>
+                    </Modal>
                 </Row>
                 <Row>
                     <div class="item item_table_app  item_table_platform" >
@@ -61,7 +89,35 @@
                             <Table :columns="platformTableColumns" :data="platformTableData"></Table>
                         </div>
                     </div>
-                    <Button class="addApp" size="large" @click="cancelCreate">添加至平台服务</Button>
+                    <Button class="addApp" size="large" @click="addToPlatform = true">添加至平台服务</Button>
+                    <Modal
+                            title="添加至平台服务"
+                            v-model="addToPlatform"
+                            class-name="vertical-center-modal  form addMemberModel" width="485">
+                        <div class="content">
+                            <Alert type="error" v-show="showError" show-icon></Alert>
+                            <div class="item">
+                                <span class="text">平台服务：</span>
+                                <div class="right">
+                                    <Select v-model="curtSelectPlatform"  style="width:300px">
+                                        <Option v-for="item in appTableData" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                                    </Select>
+                                </div>
+                            </div>
+                            <div class="item">
+                                <span class="text">角色：</span>
+                                <div class="right">
+                                    <Select v-model="curtSelectRole"  style="width:300px">
+                                        <Option v-for="item in appTableData" :value="item.name" :key="item.name">{{ item.name }}</Option>
+                                    </Select>
+                                </div>
+                            </div>
+                        </div>
+                        <div slot="footer">
+                            <Button type="text" size="large" @click="cancel">取消</Button>
+                            <Button type="primary" size="large" @click="submitAddToPlatform">添加</Button>
+                        </div>
+                    </Modal>
                 </Row>
                 <Button type="primary" class="update" size="large" @click="create">更新</Button>
                 <Button class="cancel" size="large" @click="cancelCreate">取消</Button>
@@ -78,22 +134,10 @@
         },
         data () {
             return {
-                channelManagementHref:this.$url+"/#/issueChannel/channelNumber",
-                tab:"large",
-                currentApp: "",
-                currentAppSrc: "",
-                avatorPath: "",
-                showAppList: false,
-                appList: [],
-                menuTheme: "dark",
-                shrink: false,
-                userName: '',
-                tabIndex: 0,
-                changeAppIndex:1,
-                curPage:1,
-                totalPage:20,
-                pageSize:this.$pageSize,
-                showAppCardList:false,
+                curtSelectApp:"",
+                curtSelectRole:"",
+                addToApp:false,
+                addToPlatform:false,
                 appTableData:[],
                 appTableColumns: [
                     {
@@ -292,9 +336,17 @@
                     name: 'appCreate'
                 });
             },
-            changeAppList(index){
-                this.showAppCardList = !this.showAppCardList;
-                this.changeAppIndex = index;
+            /*确定添加至平台*/
+            submitAddToPlatform(){
+                this.addToPlatform = false;
+            },
+            /*确定添加至应用*/
+            submitAddToApp(){
+                this.addToApp = false;
+            },
+            cancel(){
+              this.addToPlatform = false;
+              this.addToApp = false;
             },
             getAppList(){
                 this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
