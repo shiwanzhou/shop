@@ -34,13 +34,13 @@
                     <div class="item">
                         <span class="text channel_name_text">App ID：</span>
                         <div class="right">
-                            <Input type="text" disabled style="width: 360px;" v-model="form.appID"></Input>
+                            <Input type="text" disabled style="width: 360px;" v-model="form.id"></Input>
                         </div>
                     </div>
                     <div class="item">
                         <span class="text">创建时间：</span>
                         <div class="right">
-                           {{form.createTime}}
+                           {{form.gmtCreate}}
                         </div>
                     </div>
                 </div>
@@ -73,7 +73,7 @@
                    <div class="item remarks">
                        <span class="text">备注<em>（可选）</em>：</span>
                        <div class="right">
-                           <Input v-model="form.remarks"  style="width: 360px" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入备注"></Input>
+                           <Input v-model="form.remark"  style="width: 360px" type="textarea" :autosize="{minRows: 2,maxRows: 5}" placeholder="请输入备注"></Input>
                            <div class="desc_text">1-500个字符。如有必要，特别标注说明业务的独特类型。如：小包，或线下投放使用。</div>
                        </div>
                    </div>
@@ -128,19 +128,20 @@
         data () {
             return {
                 api:{
-                    "updateAppInfo":this.$url+"channel/getChannelList",  //更新应用信息
+                    "getAppInfo":this.$url+"app/info",  //获取应用信息
+                    "updateAppInfo":this.$url+"app/update",  //更新应用信息
                 },
                 error:"",
                 showError:0,
                 form: {
                     name:"",
-                    systemPlatform: [],
-                    remarks: "",
-                    uploadImgUrl:"",
-                    appKey:"appkeyappkeyappkeyappkey",
-                    appSecret:"App SecretApp SecretApp Secret",
-                    appID:"cfvfvfvf",
-                    createTime:" yy-mm-dd HH:MM"
+                    platform: 7,
+                    remark: "",
+                    iconUrl:"",
+                    appKey:"",
+                    appSecret:"",
+                    id:"",
+                    gmtCreate:""
                 },
                 uploadAction:this.$url+"upload/servicesPic",
                 uploadData:{
@@ -167,7 +168,11 @@
             }).catch((err) => {
                 this.$Message.error('This is an error tip');
             });*/
-            this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
+            var param = {
+                id:"10018"
+            }
+            this.$get(this.api.getAppInfo, param,(data) =>{
+                console.log(data)
                  let form = {
                         systemPlatform:['网页'],
                         remarks:"平台，强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,强制联网，微信登录，小程序传播222,",
@@ -178,9 +183,9 @@
                         appID:"cfvfvfvf",
                         createTime:" yy-mm-dd HH:MM"
                     };
-                 this.form = form;
-            }).catch((err) => {
-                    this.$Message.error('This is an error tip');
+                 this.form = data.result;
+            },(data) =>{
+                 this.$Message.error('This is an error tip');
             });
         },
         methods: {
@@ -219,7 +224,7 @@
                 this.copyStr(value);
             },
             update(){
-                if(this.form.name == ""){
+               /* if(this.form.name == ""){
                     this.showError = 1;
                     this.error = "请输入应用名称！";
                 } else if(this.form.name.length > 100){
@@ -228,23 +233,20 @@
                 } else if(!this.form.systemPlatform.length){
                     this.showError = 1;
                     this.error = "请选择系统平台！";
-                }
+                }*/
                 var param  = {
                     name:this.form.name,
-                    systemPlatform: this.form.systemPlatform,
-                    remarks: this.form.remarks,
-                    uploadImgUrl:this.form.uploadImgUrl
+                    platform: 7,
+                    remark:  this.form.remark,
+                    iconUrl: this.form.iconUrl,
+                    id: this.form.id,
                 }
                 if(!this.showError){
                     console.log(param)
-                    this.$post(this.api.updateAppInfo, param).then((res) =>{
-                        if(res.code === 1){
-                            this.$Message.success(res.msg);
-                        } else {
-                            this.$Message.error(res.msg);
-                        }
-                    }).catch((err) => {
-                            this.$Message.error(this.$ajaxErrorMsg);
+                    this.$post(this.api.updateAppInfo, param,(data) =>{
+                        this.$Message.success(data.desc);
+                    },(data) =>{
+                        this.$Message.error(this.$ajaxErrorMsg);
                     });
                 }
             }

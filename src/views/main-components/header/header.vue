@@ -121,7 +121,7 @@
             },
             getAppList(){
                 this.$get(`${this.$url}unified_account/getApp`, {}).then((res) => {
-                    console.log(res)
+                    //console.log(res)
                     let appList = [
                         {"text":"这是一个演示控制台能力的DEMO，你可以先看看。","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"神庙逃亡","role":"角色一","platform":"iOS"},
                         {"text":"这是一个演示控制台能力的DEMO，你可以先看看。","createTime":"2018-11-11 09:08","id":2,"img":"/dist/ece7b063418095d6997c2e3955ea0362.svg","name":"地铁跑酷","role":"角色一、角色二","platform":"iOS"},

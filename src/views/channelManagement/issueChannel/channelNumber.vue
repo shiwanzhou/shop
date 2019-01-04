@@ -51,11 +51,11 @@
                                 @on-cancel="cancel"
                                 class-name="vertical-center-modal  form createChannelModel" width="650">
                             <div class="content">
-                                <Alert type="error" v-show="showError" show-icon></Alert>
+                                <Alert type="error" v-show="showError" show-icon>{{error.createChannelError}}</Alert>
                                 <div class="item select_item">
                                     <span class="text">所属渠道：</span>
                                     <div class="right">
-                                        <Select placeholder="请选择渠道"  @on-change="changeChannelCreateModel"  slot="prepend" style="width: 330px">
+                                        <Select placeholder="请选择渠道" v-model="curSelectChannelCreateModel"  @on-change="changeChannelCreateModel"  slot="prepend" style="width: 330px">
                                             <Option v-for="item in belongChannels" :value="item.id"  >{{item.belongChannelName}}</Option>
                                         </Select>
                                         <div class="desc_text"> 注意：错误的所属渠道可能导致某些服务在线配置不符合其所在渠道的《内容发行合作协议》，最终导致法律纠纷。</div>
@@ -160,6 +160,9 @@
                 stopChannelModel:false,
                 batchImportModel:false,
                 showError:false,
+                error:{
+                    createChannelError:""
+                },
                 createChannelParam:{
                     belongChannel:"", //所属渠道id
                     name:"",          //渠道号名称
@@ -167,6 +170,7 @@
                     remark:""        //备注
                 },
                 curSelectBelongChannel:"",
+                curSelectChannelCreateModel:"",
                 belongChannels:[],
                 searchOption:{
                     tab: 'useing',
@@ -412,17 +416,27 @@
             },
             /*取消创建渠道*/
             createChannelModelCancel(){
+                this.initCreateChannelModel()
                 this.showError = false;
                 this.createChannelModel = false;
             },
             validateCreateChannel(){
-                if(this.createChannelParam.channelName == ""){
+                if(this.curSelectChannelCreateModel == ""){
+                    this.showError = 1;
+                    this.error.createChannelError = "请选择所属渠道！";
+                } else if(this.createChannelParam.name == ""){
                     this.showError = 1;
                     this.error.createChannelError = "渠道名称不能为空！";
-                } else if(this.createChannelParam.channelName.length > 100){
+                } else if(this.createChannelParam.identifier == ""){
                     this.showError = 1;
-                    this.error.createChannelError = "请输入1-100个渠道名称字符！";
-                } else  if(this.createChannelParam.remarks.length > 500){
+                    this.error.createChannelError = "渠道号不能为空！";
+                } else if(this.createChannelParam.name && this.createChannelParam.name.length > 50){
+                    this.showError = 1;
+                    this.error.createChannelError = "请输入1-50个渠道名称字符！";
+                } else if(this.createChannelParam.identifier && this.createChannelParam.identifier.length > 50){
+                    this.showError = 1;
+                    this.error.createChannelError = "请输入1-50个渠道号字符！";
+                } else  if(this.createChannelParam.remarks && this.createChannelParam.remarks.length > 500){
                     this.showError = 1;
                     this.error.createChannelError = "请输入1-500个备注字符！";
                 } else {
@@ -431,19 +445,34 @@
             },
             /*确定创建渠道*/
             createChannelModelOk(){
-                this.validateCreateChannel("");
+                this.validateCreateChannel();
                 if(!this.showError){
-                    this.createChannelModel = false;
                     var param = {
-                        name:this.createChannelParam.channelName,
-                        remark:this.createChannelParam.remarks
+                        belongChannel:this.createChannelParam.belongChannel, //所属渠道id
+                        name:this.createChannelParam.name,                  //渠道号名称
+                        identifier:this.createChannelParam.identifier,      //渠道号
+                        remark:this.createChannelParam.remark               //备注
                     };
-                    this.$post(this.api.createBelongChannel, param, (data) =>{
+                    console.log(param)
+                    this.$post(this.api.createChannel, param, (data) =>{
                         this.$Message.success(data.desc);
+                        this.createChannelModel = false;
+                        this.initCreateChannelModel()
                     }, (data) =>{
                         this.$Message.error(this.$ajaxErrorMsg);
+                        this.createChannelModel = false;
+                        this.initCreateChannelModel()
                     });
                 }
+            },
+            initCreateChannelModel(){
+                this.createChannelParam = {
+                    belongChannel:"",
+                    name:"",
+                    identifier:"",
+                    remark:""
+                };
+                this.curSelectChannelCreateModel = "";
             },
             exportData (type) {
                 if (type === 1) {
